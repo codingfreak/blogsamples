@@ -3,8 +3,39 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ui", "Ui", "{DE3CFD42-6325-419C-9CC6-5312783305D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logic", "Logic", "{A0E022E7-B3AB-4470-B77A-09C009FD14DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".shared", ".shared", "{F27874C2-028D-45F6-B7AF-9011D9F75C0D}"
+	ProjectSection(SolutionItems) = preProject
+		.shared\SharedAssemblyInfo.cs = .shared\SharedAssemblyInfo.cs
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ui.Desktop", "Ui\Ui.Desktop\Ui.Desktop.csproj", "{988A4CCE-9DC6-475B-A008-1367C68A091D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Ui", "Logic\Logic.Ui\Logic.Ui.csproj", "{547A13E5-AA5B-4DA5-8705-350BCE8324CA}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{988A4CCE-9DC6-475B-A008-1367C68A091D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{988A4CCE-9DC6-475B-A008-1367C68A091D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{988A4CCE-9DC6-475B-A008-1367C68A091D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{988A4CCE-9DC6-475B-A008-1367C68A091D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{547A13E5-AA5B-4DA5-8705-350BCE8324CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{547A13E5-AA5B-4DA5-8705-350BCE8324CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{547A13E5-AA5B-4DA5-8705-350BCE8324CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{547A13E5-AA5B-4DA5-8705-350BCE8324CA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{988A4CCE-9DC6-475B-A008-1367C68A091D} = {DE3CFD42-6325-419C-9CC6-5312783305D7}
+		{547A13E5-AA5B-4DA5-8705-350BCE8324CA} = {A0E022E7-B3AB-4470-B77A-09C009FD14DA}
 	EndGlobalSection
 EndGlobal
