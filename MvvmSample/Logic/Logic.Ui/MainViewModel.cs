@@ -1,6 +1,9 @@
 namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
 {
+    using System.Threading.Tasks;
+
     using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Threading;
 
     /// <summary>
     /// Contains logic for the main view of the UI.
@@ -17,16 +20,36 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
             if (IsInDesignMode)
             {
                 WindowTitle = "MvvmSample (Design)";
+                Progress = 30;
             }
             else
             {
+                DispatcherHelper.Initialize();
                 WindowTitle = "MvvmSample";
+                Task.Run(
+                    () =>
+                    {
+                        Task.Delay(2000).ContinueWith(
+                            t =>
+                            {
+                                while (Progress < 100)
+                                {
+                                    DispatcherHelper.RunAsync(() => Progress += 5);
+                                    Task.Delay(500).Wait();
+                                }
+                            });
+                    });
             }
         }
 
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Indicates the progress.
+        /// </summary>
+        public int Progress { get; set; }
 
         /// <summary>
         /// The caption of the window.

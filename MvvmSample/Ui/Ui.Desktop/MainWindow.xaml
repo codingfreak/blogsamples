@@ -6,5 +6,7 @@
         mc:Ignorable="d"
         Title="{Binding WindowTitle, Mode=OneWay}" Height="350" Width="525"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
-    <Grid />
+    <Grid>
+        <ProgressBar Value="{Binding Progress}"></ProgressBar>
+    </Grid>
 </Window>
