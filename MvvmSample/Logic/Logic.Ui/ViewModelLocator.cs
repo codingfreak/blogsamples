@@ -11,6 +11,8 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
     /// </summary>
     public class ViewModelLocator
     {
+        #region constructors and destructors
+
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
@@ -21,17 +23,29 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
             {
                 // Create design time view services and models
             }
-            else
-            {
-                // Create run time view services and models
-            }
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        #endregion
 
+        #region methods
+
+        /// <summary>
+        /// Cleans up resources.
+        /// </summary>
         public static void Cleanup()
         {
         }
+
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Retrieves the view model for the main view.
+        /// </summary>
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        #endregion
     }
 }
