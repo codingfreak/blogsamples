@@ -47,6 +47,11 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         #region properties
 
         /// <summary>
+        /// A person to edit.
+        /// </summary>
+        public Person PersonModel { get; set; } = new Person();
+
+        /// <summary>
         /// Indicates the progress.
         /// </summary>
         public int Progress { get; set; }

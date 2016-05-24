@@ -4,9 +4,79 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle, Mode=OneWay}" Height="350" Width="525"
+        Title="{Binding WindowTitle, Mode=OneWay}" Height="350" Width="742"
         DataContext="{Binding Main, Source={StaticResource Locator}}">
-    <Grid>
-        <ProgressBar Value="{Binding Progress}"></ProgressBar>
+    <Grid Margin="10">
+        <Grid.Resources>
+            <ControlTemplate x:Key="ErrorTemplate">
+                <DockPanel LastChildFill="True">
+                    <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
+                        <AdornedElementPlaceholder />
+                    </Border>
+                </DockPanel>
+            </ControlTemplate>
+            <Style TargetType="GroupBox">
+                <Setter Property="Padding" Value="3 6 3 5" />
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Height="20" />
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="4" />
+                <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="4" />
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Progress-Bar with binding">
+            <ProgressBar Value="{Binding Progress}" MinHeight="20" />
+        </GroupBox>
+        <GroupBox Grid.Column="0" Grid.Row="1" Header="Binding &amp; IDataErrorInfo">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Label Content="Firstname:" Grid.Column="0" Grid.Row="0" />
+                <TextBox
+                    Text="{Binding PersonModel.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnExceptions=True}"                    
+                    Grid.Column="1" Grid.Row="0" />
+                <Label Content="Lastname:" Grid.Column="0" Grid.Row="1" />
+                <TextBox
+                    Text="{Binding PersonModel.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True, NotifyOnValidationError=True, ValidatesOnExceptions=True}"                    
+                    Grid.Column="1" Grid.Row="1" />
+                
+                <Button Grid.Row="3" 
+                        Grid.Column="0" 
+                        Grid.ColumnSpan="2" 
+                        Content="OK" 
+                        Width="100"                         
+                        Command="{Binding PersonModel.OkCommand}" />
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>
