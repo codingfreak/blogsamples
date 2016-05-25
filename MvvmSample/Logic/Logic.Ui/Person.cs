@@ -19,6 +19,12 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
     /// </summary>
     public class Person : INotifyPropertyChanged, IDataErrorInfo
     {
+        #region constants
+
+        private static List<PropertyInfo> _propertyInfos;
+
+        #endregion
+
         #region events
 
         /// <summary>
@@ -95,32 +101,28 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         private void CollectErrors()
         {
             Errors.Clear();
-            var properties =
-                this.GetType()
-                    .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                    .Where(prop => prop.IsDefined(typeof(RequiredAttribute), true) || prop.IsDefined(typeof(MaxLengthAttribute), true))
-                    .ToList();
-             properties.ForEach(
-                 prop =>
-                 {
-                     var currentValue = prop.GetValue(this);
-                     var requiredAttr = prop.GetCustomAttribute<RequiredAttribute>();
-                     var maxLenAttr = prop.GetCustomAttribute<MaxLengthAttribute>();
-                     if (requiredAttr != null)
-                     {
-                         if (string.IsNullOrEmpty(currentValue?.ToString() ?? string.Empty))
-                         {
-                             Errors.Add(prop.Name, requiredAttr.ErrorMessage);
-                         }
-                     }
-                     if (maxLenAttr != null)
-                     {
-                         if ((currentValue?.ToString() ?? string.Empty).Length > maxLenAttr.Length)
-                         {
-                             Errors.Add(prop.Name, maxLenAttr.ErrorMessage);
-                         }
-                     }
-                 });            
+            PropertyInfos.ForEach(
+                prop =>
+                {
+                    var currentValue = prop.GetValue(this);
+                    var requiredAttr = prop.GetCustomAttribute<RequiredAttribute>();
+                    var maxLenAttr = prop.GetCustomAttribute<MaxLengthAttribute>();
+                    if (requiredAttr != null)
+                    {
+                        if (string.IsNullOrEmpty(currentValue?.ToString() ?? string.Empty))
+                        {
+                            Errors.Add(prop.Name, requiredAttr.ErrorMessage);
+                        }
+                    }
+                    if (maxLenAttr != null)
+                    {
+                        if ((currentValue?.ToString() ?? string.Empty).Length > maxLenAttr.Length)
+                        {
+                            Errors.Add(prop.Name, maxLenAttr.ErrorMessage);
+                        }
+                    }
+                    // further attributes
+                });
             // we have to this because the Dictionary does not implement INotifyPropertyChanged            
             OnPropertyChanged(nameof(HasErrors));
             OnPropertyChanged(nameof(IsOk));
@@ -133,6 +135,11 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         #region properties
 
         /// <summary>
+        /// The calculated age of the person.
+        /// </summary>
+        public int? Age => Birthday.HasValue ? (int)DateTime.Now.Subtract(Birthday.Value).TotalDays / 364 : default(int?);
+
+        /// <summary>
         /// The lastname of the person.
         /// </summary>
         public DateTime? Birthday { get; set; }
@@ -143,11 +150,6 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         [Required(AllowEmptyStrings = false, ErrorMessage = "First name must not be empty.")]
         [MaxLength(20, ErrorMessage = "Maximum of 50 characters is allowed.")]
         public string Firstname { get; set; }
-
-        /// <summary>
-        /// The calculated age of the person.
-        /// </summary>        
-        public int? Age => Birthday.HasValue ? (int)DateTime.Now.Subtract(Birthday.Value).TotalDays / 364 : default(int?);
 
         /// <summary>
         /// Indicates whether this instance has any errors.
@@ -172,6 +174,26 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         /// The command which does something with the person.
         /// </summary>
         public RelayCommand OkCommand { get; }
+
+        /// <summary>
+        /// Retrieves a list of all properties with attributes required for <see cref="IDataErrorInfo" /> automation.
+        /// </summary>
+        protected List<PropertyInfo> PropertyInfos
+        {
+            get
+            {
+                if (_propertyInfos == null)
+                {
+                    // TODO filter for other attributes
+                    _propertyInfos =
+                        GetType()
+                            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                            .Where(prop => prop.IsDefined(typeof(RequiredAttribute), true) || prop.IsDefined(typeof(MaxLengthAttribute), true))
+                            .ToList();
+                }
+                return _propertyInfos;
+            }
+        }
 
         /// <summary>
         /// A dictionary of current errors with the name of the error-field as the key and the error
