@@ -33,7 +33,7 @@
                 <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
                 <Style.Triggers>
                     <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors)[0].ErrorContent}" />
+                        <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors).CurrentItem.ErrorContent}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
