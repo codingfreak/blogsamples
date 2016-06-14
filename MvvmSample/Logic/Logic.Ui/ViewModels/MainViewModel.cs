@@ -1,9 +1,8 @@
-namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
+namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui.ViewModels
 {
     using System.Threading.Tasks;
 
-    using codingfreaks.blogsamples.MvvmSample.Logic.Ui.BaseClasses;
-    using codingfreaks.blogsamples.MvvmSample.Logic.Ui.Samples;
+    using BaseClasses;
 
     using GalaSoft.MvvmLight.Threading;
 

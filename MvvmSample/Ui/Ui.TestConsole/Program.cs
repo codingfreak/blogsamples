@@ -4,18 +4,18 @@
     using System.ComponentModel;
     using System.Linq;
 
-    class Program
+    internal class Program
     {
         #region methods
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             TestPropertyChanged();
             Console.ReadKey();
         }
 
         /// <summary>
-        /// Tests the functionallity of <see cref="INotifyPropertyChanged"/>.
+        /// Tests the functionallity of <see cref="INotifyPropertyChanged" />.
         /// </summary>
         private static void TestPropertyChanged()
         {

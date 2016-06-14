@@ -33,7 +33,8 @@
                 <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
                 <Style.Triggers>
                     <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors).CurrentItem.ErrorContent}" />
+                        <Setter Property="ToolTip"
+                                Value="{Binding RelativeSource={x:Static RelativeSource.Self},Path=(Validation.Errors).CurrentItem.ErrorContent}" />
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -68,21 +69,21 @@
                 <!-- Firstname -->
                 <Label Content="Firstname:" Grid.Column="0" Grid.Row="0" />
                 <TextBox
-                    Text="{Binding PersonModel.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"                    
+                    Text="{Binding PersonModel.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                     Grid.Column="1" Grid.Row="0" />
                 <!-- Lastname -->
                 <Label Content="Lastname:" Grid.Column="0" Grid.Row="1" />
                 <TextBox
-                    Text="{Binding PersonModel.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"                    
+                    Text="{Binding PersonModel.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}"
                     Grid.Column="1" Grid.Row="1" />
                 <!-- OK-Button -->
-                <Button Grid.Row="3" 
-                        Grid.Column="0" 
-                        Grid.ColumnSpan="2" 
+                <Button Grid.Row="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
                         HorizontalAlignment="Right"
                         Margin="5"
-                        Content="OK" 
-                        Width="100"                         
+                        Content="OK"
+                        Width="100"
                         Command="{Binding PersonModel.OkCommand}" />
             </Grid>
         </GroupBox>

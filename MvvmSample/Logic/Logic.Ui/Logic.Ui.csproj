@@ -74,8 +74,8 @@
     </Compile>
     <Compile Include="BaseClasses\BaseViewModel.cs" />
     <Compile Include="Converters\BoolInverseConverter.cs" />
-    <Compile Include="MainViewModel.cs" />
-    <Compile Include="Samples\PersonViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\PersonViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelLocator.cs" />

@@ -1,11 +1,11 @@
-﻿namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui.Samples
+﻿namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui.ViewModels
 {
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.Diagnostics;
     using System.Linq;
 
-    using codingfreaks.blogsamples.MvvmSample.Logic.Ui.BaseClasses;
+    using BaseClasses;
 
     using GalaSoft.MvvmLight.Command;
 
