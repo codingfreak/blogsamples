@@ -1,53 +1,23 @@
 ﻿using System;
 using System.Linq;
 
-namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
+namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui.BaseClasses
 {
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics;
     using System.Reflection;
-    using System.Runtime.CompilerServices;
 
-    using Annotations;
-
-    using GalaSoft.MvvmLight.Command;
+    using GalaSoft.MvvmLight;
 
     /// <summary>
-    /// Encapsulates the complete data and ui-logic for one single person.
+    /// Abstract base class for all view models.
     /// </summary>
-    public class Person : INotifyPropertyChanged, IDataErrorInfo
+    public abstract class BaseViewModel : ViewModelBase, IDataErrorInfo
     {
         #region constants
 
         private static List<PropertyInfo> _propertyInfos;
-
-        #endregion
-
-        #region events
-
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region constructors and destructors
-
-        /// <summary>
-        /// Default constructor.
-        /// </summary>
-        public Person()
-        {
-            OkCommand = new RelayCommand(
-                () =>
-                {
-                    Trace.WriteLine("OK");
-                },
-                () => IsOk);
-        }
 
         #endregion
 
@@ -82,14 +52,9 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         #region methods
 
         /// <summary>
-        /// Raises the <see cref="PropertyChanged" /> event.
+        /// Has to be overridden by childs to react to collection of errors in a specific way.
         /// </summary>
-        /// <param name="propertyName">The name of the property which value has changed.</param>
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected abstract void OnErrorsCollected();
 
         /// <summary>
         /// Is called by the indexer to collect all errors and not only the one for a special field.
@@ -124,32 +89,15 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
                     // further attributes
                 });
             // we have to this because the Dictionary does not implement INotifyPropertyChanged            
-            OnPropertyChanged(nameof(HasErrors));
-            OnPropertyChanged(nameof(IsOk));
+            RaisePropertyChanged(() => HasErrors);
+            RaisePropertyChanged(() => IsOk);
             // commands do not recognize property changes automatically
-            OkCommand.RaiseCanExecuteChanged();
+            OnErrorsCollected();
         }
 
         #endregion
 
         #region properties
-
-        /// <summary>
-        /// The calculated age of the person.
-        /// </summary>
-        public int? Age => Birthday.HasValue ? (int)DateTime.Now.Subtract(Birthday.Value).TotalDays / 364 : default(int?);
-
-        /// <summary>
-        /// The lastname of the person.
-        /// </summary>
-        public DateTime? Birthday { get; set; }
-
-        /// <summary>
-        /// The firstname of the person.
-        /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = "First name must not be empty.")]
-        [MaxLength(20, ErrorMessage = "Maximum of 50 characters is allowed.")]
-        public string Firstname { get; set; }
 
         /// <summary>
         /// Indicates whether this instance has any errors.
@@ -163,17 +111,6 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         /// Exists for convenient binding only.
         /// </remarks>
         public bool IsOk => !HasErrors;
-
-        /// <summary>
-        /// The lastname of the person.
-        /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Last name must not be empty.")]
-        public string Lastname { get; set; }
-
-        /// <summary>
-        /// The command which does something with the person.
-        /// </summary>
-        public RelayCommand OkCommand { get; }
 
         /// <summary>
         /// Retrieves a list of all properties with attributes required for <see cref="IDataErrorInfo" /> automation.

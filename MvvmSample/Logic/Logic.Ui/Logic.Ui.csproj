@@ -72,12 +72,12 @@
     <Compile Include="..\..\.shared\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="BoolInverseConverter.cs" />
+    <Compile Include="BaseClasses\BaseViewModel.cs" />
+    <Compile Include="Converters\BoolInverseConverter.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="Person.cs" />
+    <Compile Include="Samples\PersonViewModel.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeExtensions.cs" />
     <Compile Include="ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>

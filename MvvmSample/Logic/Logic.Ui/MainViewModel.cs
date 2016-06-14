@@ -2,13 +2,15 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
 {
     using System.Threading.Tasks;
 
-    using GalaSoft.MvvmLight;
+    using codingfreaks.blogsamples.MvvmSample.Logic.Ui.BaseClasses;
+    using codingfreaks.blogsamples.MvvmSample.Logic.Ui.Samples;
+
     using GalaSoft.MvvmLight.Threading;
 
     /// <summary>
     /// Contains logic for the main view of the UI.
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : BaseViewModel
     {
         #region constructors and destructors
 
@@ -44,12 +46,23 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
 
         #endregion
 
+        #region methods
+
+        /// <summary>
+        /// Has to be overridden by childs to react to collection of errors in a specific way.
+        /// </summary>
+        protected override void OnErrorsCollected()
+        {
+        }
+
+        #endregion
+
         #region properties
 
         /// <summary>
         /// A person to edit.
         /// </summary>
-        public Person PersonModel { get; set; } = new Person();
+        public PersonViewModel PersonModel { get; set; } = new PersonViewModel();
 
         /// <summary>
         /// Indicates the progress.
