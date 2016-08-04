@@ -8,7 +8,7 @@
     using System.Linq;
     using System.Runtime.CompilerServices;
 
-    using GalaSoft.MvvmLight;
+    using Annotations;
 
     /// <summary>
     /// Abstract base class for all models.
@@ -89,7 +89,12 @@
         /// <summary>
         /// Raises the <see cref="PropertyChanged" /> event.
         /// </summary>
-        protected abstract void OnErrorsCollected();
+        /// <param name="propertyName">The name of the property which value has changed.</param>
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         /// <summary>
         /// Is called by the indexer to collect all errors and not only the one for a special field.
@@ -124,8 +129,8 @@
                     // further attributes
                 });
             // we have to this because the Dictionary does not implement INotifyPropertyChanged            
-            RaisePropertyChanged(() => HasErrors);
-            RaisePropertyChanged(() => IsOk);
+            OnPropertyChanged(nameof(HasErrors));
+            OnPropertyChanged(nameof(IsOk));
             // commands do not recognize property changes automatically
             OnErrorsCollected();
         }
