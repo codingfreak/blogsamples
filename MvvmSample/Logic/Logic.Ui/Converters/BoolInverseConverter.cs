@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
+﻿namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui.Converters
 {
+    using System;
     using System.Globalization;
+    using System.Linq;
     using System.Windows.Data;
 
     /// <summary>

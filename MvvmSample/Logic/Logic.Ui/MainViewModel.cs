@@ -5,6 +5,8 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Threading;
 
+    using Models;
+
     /// <summary>
     /// Contains logic for the main view of the UI.
     /// </summary>
@@ -49,7 +51,7 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         /// <summary>
         /// A person to edit.
         /// </summary>
-        public Person PersonModel { get; set; } = new Person();
+        public PersonModel PersonModel { get; set; } = new PersonModel();
 
         /// <summary>
         /// Indicates the progress.

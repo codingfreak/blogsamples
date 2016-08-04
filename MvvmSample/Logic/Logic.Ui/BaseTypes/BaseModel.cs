@@ -1,23 +1,19 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
+﻿namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui.BaseTypes
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
-    using System.Diagnostics;
     using System.Reflection;
+    using System.Linq;
     using System.Runtime.CompilerServices;
 
     using Annotations;
 
-    using GalaSoft.MvvmLight.Command;
-
     /// <summary>
-    /// Encapsulates the complete data and ui-logic for one single person.
+    /// Abstract base class for all models.
     /// </summary>
-    public class Person : INotifyPropertyChanged, IDataErrorInfo
+    public abstract class BaseModel : INotifyPropertyChanged, IDataErrorInfo
     {
         #region constants
 
@@ -39,14 +35,9 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         /// <summary>
         /// Default constructor.
         /// </summary>
-        public Person()
+        public BaseModel()
         {
-            OkCommand = new RelayCommand(
-                () =>
-                {
-                    Trace.WriteLine("OK");
-                },
-                () => IsOk);
+            InitCommands();
         }
 
         #endregion
@@ -80,6 +71,20 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         #endregion
 
         #region methods
+
+        /// <summary>
+        /// Override this method in derived types to initialize command logic.
+        /// </summary>
+        protected virtual void InitCommands()
+        {
+        }
+
+        /// <summary>
+        /// Can be overridden by derived types to react on the finisihing of error-collections.
+        /// </summary>
+        protected virtual void OnErrorsCollected()
+        {
+        }
 
         /// <summary>
         /// Raises the <see cref="PropertyChanged" /> event.
@@ -127,29 +132,12 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
             OnPropertyChanged(nameof(HasErrors));
             OnPropertyChanged(nameof(IsOk));
             // commands do not recognize property changes automatically
-            OkCommand.RaiseCanExecuteChanged();
+            OnErrorsCollected();
         }
 
         #endregion
 
         #region properties
-
-        /// <summary>
-        /// The calculated age of the person.
-        /// </summary>
-        public int? Age => Birthday.HasValue ? (int)DateTime.Now.Subtract(Birthday.Value).TotalDays / 364 : default(int?);
-
-        /// <summary>
-        /// The lastname of the person.
-        /// </summary>
-        public DateTime? Birthday { get; set; }
-
-        /// <summary>
-        /// The firstname of the person.
-        /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = "First name must not be empty.")]
-        [MaxLength(20, ErrorMessage = "Maximum of 50 characters is allowed.")]
-        public string Firstname { get; set; }
 
         /// <summary>
         /// Indicates whether this instance has any errors.
@@ -165,33 +153,18 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         public bool IsOk => !HasErrors;
 
         /// <summary>
-        /// The lastname of the person.
-        /// </summary>
-        [Required(AllowEmptyStrings = false, ErrorMessage = "Last name must not be empty.")]
-        public string Lastname { get; set; }
-
-        /// <summary>
-        /// The command which does something with the person.
-        /// </summary>
-        public RelayCommand OkCommand { get; }
-
-        /// <summary>
         /// Retrieves a list of all properties with attributes required for <see cref="IDataErrorInfo" /> automation.
         /// </summary>
         protected List<PropertyInfo> PropertyInfos
         {
             get
             {
-                if (_propertyInfos == null)
-                {
-                    // TODO filter for other attributes
-                    _propertyInfos =
-                        GetType()
-                            .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                            .Where(prop => prop.IsDefined(typeof(RequiredAttribute), true) || prop.IsDefined(typeof(MaxLengthAttribute), true))
-                            .ToList();
-                }
-                return _propertyInfos;
+                return _propertyInfos
+                       ?? (_propertyInfos =
+                           GetType()
+                               .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                               .Where(prop => prop.IsDefined(typeof(RequiredAttribute), true) || prop.IsDefined(typeof(MaxLengthAttribute), true))
+                               .ToList());
             }
         }
 
