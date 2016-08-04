@@ -8,7 +8,7 @@ namespace codingfreaks.blogsamples.MvvmSample.Ui.TestConsole
     using PropertyChanged;
 
     /// <summary>
-    /// A test showing the usage of <see cref="INotifyPropertyChanged"/>.
+    /// A test showing the usage of <see cref="INotifyPropertyChanged" />.
     /// </summary>
     public class TestClass : INotifyPropertyChanged
     {
@@ -24,8 +24,8 @@ namespace codingfreaks.blogsamples.MvvmSample.Ui.TestConsole
         #region properties
 
         /// <summary>
-        /// The lenght of the string in <see cref="SomeProperty"/>.
-        /// </summary>        
+        /// The lenght of the string in <see cref="SomeProperty" />.
+        /// </summary>
         public int LengthOfSomeProperty => SomeProperty.Length;
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace codingfreaks.blogsamples.MvvmSample.Ui.TestConsole
         public string SomeProperty { get; set; }
 
         /// <summary>
-        /// Contains a boolean value and will not raise <see cref="PropertyChanged"/> when it is changed.
+        /// Contains a boolean value and will not raise <see cref="PropertyChanged" /> when it is changed.
         /// </summary>
         [DoNotNotify]
         public bool SomeSecretProperty { get; set; }
