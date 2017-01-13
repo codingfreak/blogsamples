@@ -2,15 +2,20 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
 {
     using System.Threading.Tasks;
 
+    using BaseTypes;
+
     using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
     using GalaSoft.MvvmLight.Threading;
+
+    using Messages;
 
     using Models;
 
     /// <summary>
     /// Contains logic for the main view of the UI.
     /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : BaseViewModel
     {
         #region constructors and destructors
 
@@ -25,8 +30,7 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
                 Progress = 30;
             }
             else
-            {
-                DispatcherHelper.Initialize();
+            {                
                 WindowTitle = "MvvmSample";
                 Task.Run(
                     () =>
@@ -41,6 +45,7 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
                                 }
                             });
                     });
+                OpenChildCommand = new RelayCommand(() => MessengerInstance.Send(new OpenChildWindowMessage("Hello Child!")));
             }
         }
 
@@ -57,11 +62,11 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         /// Indicates the progress.
         /// </summary>
         public int Progress { get; set; }
-
+       
         /// <summary>
-        /// The caption of the window.
+        /// Opens a new child window.
         /// </summary>
-        public string WindowTitle { get; private set; }
+        public RelayCommand OpenChildCommand { get; private set; }
 
         #endregion
     }

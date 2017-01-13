@@ -4,6 +4,10 @@
     using System.Linq;
     using System.Windows;
 
+    using GalaSoft.MvvmLight.Messaging;
+
+    using Logic.Ui.Messages;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -13,7 +17,7 @@
 
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         #endregion

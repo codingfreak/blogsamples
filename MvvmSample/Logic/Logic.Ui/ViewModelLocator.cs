@@ -1,10 +1,13 @@
 namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
 {
+    using System;
+    using System.Linq;
+
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Ioc;
 
     using Microsoft.Practices.ServiceLocation;
-    
+
     /// <summary>
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
@@ -24,6 +27,7 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
                 // Create design time view services and models
             }
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<ChildViewModel>();
         }
 
         #endregion
@@ -45,6 +49,11 @@ namespace codingfreaks.blogsamples.MvvmSample.Logic.Ui
         /// Retrieves the view model for the main view.
         /// </summary>
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        /// <summary>
+        /// Retrieves the view model for the child view.
+        /// </summary>
+        public ChildViewModel Child => ServiceLocator.Current.GetInstance<ChildViewModel>();
 
         #endregion
     }
