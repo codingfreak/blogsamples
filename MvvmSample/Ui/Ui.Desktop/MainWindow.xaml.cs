@@ -1,6 +1,7 @@
 ﻿namespace codingfreaks.blogsamples.MvvmSample.Ui.Desktop
 {
     using System;
+    using System.Diagnostics;
     using System.Linq;
     using System.Windows;
 
@@ -20,6 +21,6 @@
             InitializeComponent();            
         }
 
-        #endregion
+        #endregion        
     }
 }

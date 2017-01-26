@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              d1p1:Ignorable="d"
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Converters="clr-namespace:codingfreaks.blogsamples.MvvmSample.Logic.Ui.Converters;assembly=MvvmSample.Logic.Ui"
              xmlns:UiLogic="clr-namespace:codingfreaks.blogsamples.MvvmSample.Logic.Ui;assembly=MvvmSample.Logic.Ui"
              xmlns:Desktop="clr-namespace:codingfreaks.blogsamples.MvvmSample.Ui.Desktop">
     <Application.Resources>
@@ -12,6 +13,7 @@
             <UiLogic:ViewModelLocator x:Key="Locator"
                                       d:IsDataSource="True" />
             <Desktop:MessageListener x:Key="MessageListener"  />
+            <Converters:AgeToBrushConverter x:Key="AgeToBrushConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
