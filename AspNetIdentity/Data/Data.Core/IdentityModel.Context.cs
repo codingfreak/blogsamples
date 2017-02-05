@@ -13,9 +13,13 @@ namespace codingfreaks.AspNetIdentity.Data.Core
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
+    /// <summary>
+    /// Use ContextUtil.Context to retrieve an instance of this type.
+    /// </summary>
     public partial class IdentityEntities : DbContext
     {
-        public IdentityEntities()
+        
+    	internal IdentityEntities()
             : base("name=IdentityEntities")
         {
         }

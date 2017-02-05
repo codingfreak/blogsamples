@@ -53,9 +53,13 @@ using System.Linq;
 }
 #>
 
+/// <summary>
+/// Use ContextUtil.Context to retrieve an instance of this type.
+/// </summary>
 <#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#> : DbContext
 {
-    public <#=code.Escape(container)#>()
+    
+	internal <#=code.Escape(container)#>()
         : base("name=<#=container.Name#>")
     {
 <#
