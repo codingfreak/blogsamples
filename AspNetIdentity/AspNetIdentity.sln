@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{604D4209-6AD7-4ECD-8462-5D6B54E29F9A}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Data.Database", "Data\Data.Database\Data.Database.sqlproj", "{032B39E9-B87B-4A22-9EE6-555B3A85B736}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{032B39E9-B87B-4A22-9EE6-555B3A85B736}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{032B39E9-B87B-4A22-9EE6-555B3A85B736}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{032B39E9-B87B-4A22-9EE6-555B3A85B736}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{032B39E9-B87B-4A22-9EE6-555B3A85B736}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{032B39E9-B87B-4A22-9EE6-555B3A85B736}.Release|Any CPU.Build.0 = Release|Any CPU
+		{032B39E9-B87B-4A22-9EE6-555B3A85B736}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{032B39E9-B87B-4A22-9EE6-555B3A85B736} = {604D4209-6AD7-4ECD-8462-5D6B54E29F9A}
+	EndGlobalSection
+EndGlobal
