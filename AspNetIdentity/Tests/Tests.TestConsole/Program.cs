@@ -4,19 +4,47 @@ using System.Linq;
 namespace codingfreaks.AspNetIdentity.Tests.TestConsole
 {
     using System;
+
+    using Autofac;
+
     using System.Linq;
 
-    using Data.Core;
+    using Logic.Core.Utils;
+    using Logic.Shared.Interfaces;
+    using Logic.Shared.TransportModels;
 
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
-        {                       
-            using (var ctx = ContextUtil.Context)
-            {                
-                Console.WriteLine(ctx.Roles.Count());
-            }
+        #region methods
+
+        private static void CheckUserTest()
+        {
+            var instance = StartupUtil.Container.Resolve<IUserRepository>();
+            Console.WriteLine(instance.UserExistsAsync("testuser").Result);
+        }
+
+        private static void CreateUserTest()
+        {
+            var instance = StartupUtil.Container.Resolve<IUserRepository>();
+            var result = instance.AddUserAsnyc(
+                new UserTransportModel
+                {
+                    UserName = "testuser2",
+                    Email = "test2@test.de",
+                    PasswordHash = "fjdklfjdsdsdlfjlsdjfklsdjfklsdjflsdk"
+                },
+                "User").Result;
+            Console.WriteLine($"User with id {result} created.");
+        }
+
+        private static void Main(string[] args)
+        {
+            StartupUtil.InitLogic();
+            //CreateUserTest();
+            //CheckUserTest();            
             Console.ReadKey();
         }
+
+        #endregion
     }
 }
