@@ -14,7 +14,7 @@ namespace codingfreaks.AspNetIdentity.Data.Core
             get
             {
                 var context = new IdentityEntities();
-                context.Configuration.LazyLoadingEnabled = false;
+                context.Configuration.LazyLoadingEnabled = true;
                 context.Database.Log = msg => Trace.TraceInformation(msg);
                 return context;
             }

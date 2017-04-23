@@ -10,16 +10,15 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
         #region properties
 
         [Required]
-        [Display(Name = "Benutzername")]
-        [EmailAddress]
+        [Display(Name = "User name")]        
         public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Kennwort")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Angemeldet bleiben")]
+        [Display(Name = "Stay logged in")]
         public bool RememberMe { get; set; }
 
         #endregion

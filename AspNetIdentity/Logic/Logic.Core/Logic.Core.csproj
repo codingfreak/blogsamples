@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventArguments\ContainerBuilderEventsArgs.cs" />
     <Compile Include="Extensions\UserExtensions.cs" />
     <Compile Include="Extensions\UserTransportModelExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

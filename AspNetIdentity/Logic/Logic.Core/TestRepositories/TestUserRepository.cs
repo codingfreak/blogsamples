@@ -134,6 +134,11 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.TestRepositories
             return Task.FromResult(_store.Value.Any(u => u.UserName.Equals(userName, StringComparison.Ordinal)));
         }
 
+        public Task<IEnumerable<string>> GetRoleNamesAsync(long userId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

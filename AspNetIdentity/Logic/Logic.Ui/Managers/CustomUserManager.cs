@@ -3,6 +3,8 @@ using System.Linq;
 
 namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
 {
+    using System.Threading.Tasks;
+
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
     using Microsoft.Owin;
@@ -78,7 +80,7 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
             }
             return manager;
         }
-
+        
         #endregion
     }
 }

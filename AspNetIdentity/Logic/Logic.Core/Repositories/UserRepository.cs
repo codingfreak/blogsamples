@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace codingfreaks.AspNetIdentity.Logic.Core.Repositories
 {
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Threading.Tasks;
 
     using Data.Core;
 
@@ -52,6 +51,7 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Repositories
             newUser.AccessFailedCount = 0;
             newUser.LockoutEnabled = false;
             newUser.LockoutEndDateUtc = null;
+            newUser.SecurityStamp = Guid.NewGuid().ToString("N");
             var userRole = new UserRole
             {
                 RoleId = roleId.Value
@@ -72,6 +72,13 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Repositories
                 HandleException(ex);
                 return default(long?);
             }
+        }
+
+        /// <inheritdoc />
+        public async Task<IEnumerable<string>> GetRoleNamesAsync(long userId)
+        {
+            var user = await DbContext.Users.FindAsync(userId);
+            return user?.UserRoles.Select(ur => ur.Role.Name);
         }
 
         /// <inheritdoc />

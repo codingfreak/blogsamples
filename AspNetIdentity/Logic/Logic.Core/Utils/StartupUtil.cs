@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
 {
+    using System.Collections.Generic;
     using System.Reflection;
 
     using Autofac;
@@ -10,6 +11,8 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
     using AutoMapper;
 
     using Data.Core;
+
+    using EventArguments;
 
     using Shared.Interfaces;
     using Shared.TransportModels;
@@ -21,6 +24,13 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
     /// </summary>
     public static class StartupUtil
     {
+
+        /// <summary>
+        /// Is fired before the AutoFac container is beeing built so that the receiver can do
+        /// custom stuff with AutoFac builder.
+        /// </summary>
+        public static event EventHandler<ContainerBuilderEventsArgs> AutoFacBuilderReady;
+
         #region methods
 
         public static void InitLogic(bool runsUnderTest = false)
@@ -28,10 +38,10 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
             // initialize AutoMapper
             Mapper.Initialize(
                 cfg =>
-                {
+                {                    
                     cfg.CreateMap<User, UserTransportModel>();
-                    cfg.CreateMap<UserTransportModel, User>();
-                });
+                    cfg.CreateMap<UserTransportModel, User>();                    
+                });            
             // initialize AutoFac as DI
             var builder = new ContainerBuilder();
             if (runsUnderTest)
@@ -44,6 +54,8 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
                 var coreLogic = Assembly.GetExecutingAssembly();
                 builder.RegisterAssemblyTypes(coreLogic).Where(t => !t.Name.Contains("Test") && t.Name.EndsWith("Repository")).AsImplementedInterfaces();
             }
+            // give the caller additional chance to do something with the builder
+            AutoFacBuilderReady?.Invoke(null, new ContainerBuilderEventsArgs(builder));
             Container = builder.Build();
         }
 

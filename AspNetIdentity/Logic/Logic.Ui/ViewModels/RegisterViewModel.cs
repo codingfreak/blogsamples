@@ -10,20 +10,24 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
         #region properties
 
         [DataType(DataType.Password)]
-        [Display(Name = "Kennwort-Bestätigung")]
-        [Compare("Password", ErrorMessage = "Die beiden Kennwörter stimmen nicht überein.")]
+        [Display(Name = "Password confirm")]
+        [Compare("Password", ErrorMessage = "Passwords dont match.")]
         public string ConfirmPassword { get; set; }
 
         [Required]
         [EmailAddress]
-        [Display(Name = "E-Mail-Adresse")]
+        [Display(Name = "Mail address")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "Das {0} muss mindestens {2} Zeichen lang sein.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "Password {0} has to be {2} chars in max.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Kennwort")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [Required]        
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
 
         #endregion
     }
