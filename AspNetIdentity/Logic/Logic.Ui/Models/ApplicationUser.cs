@@ -1,7 +1,4 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.Models
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.Models
 {
     using System;
     using System.Collections.Generic;

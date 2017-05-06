@@ -1,13 +1,6 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.Models
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.Models
 {
     using System;
-    using System;
-    using System;
-    using System.Linq;
-    using System.Linq;
     using System.Linq;
 
     using Microsoft.AspNet.Identity.EntityFramework;

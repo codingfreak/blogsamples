@@ -1,15 +1,11 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
+﻿namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
 {
     using System;
-    using System.Web;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Mvc;
 
-    using Logic.Ui.Managers;
     using Logic.Ui.Models;
     using Logic.Ui.ViewModels;
 
@@ -23,7 +19,6 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
     [Authorize]
     public class AccountController : BaseController
     {
-        
         #region methods
 
         //
@@ -73,10 +68,8 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
             var result = await SignInManager.ExternalSignInAsync(loginInfo, false);
             switch (result)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
+                case SignInStatus.Success: return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut: return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction(
                         "SendCode",
@@ -219,10 +212,8 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
             var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
             switch (result)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
+                case SignInStatus.Success: return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut: return View("Lockout");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction(
                         "SendCode",
@@ -423,10 +414,8 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
             var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, model.RememberMe, model.RememberBrowser);
             switch (result)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(model.ReturnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
+                case SignInStatus.Success: return RedirectToLocal(model.ReturnUrl);
+                case SignInStatus.LockedOut: return View("Lockout");
                 case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid code.");
@@ -441,13 +430,7 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
         // Used for XSRF protection when adding external logins
         private const string XsrfKey = "XsrfId";
 
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private void AddErrors(IdentityResult result)
         {

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Services.Api.Controllers
+﻿namespace codingfreaks.AspNetIdentity.Services.Api.Controllers
 {
+    using System;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -58,6 +57,19 @@ namespace codingfreaks.AspNetIdentity.Services.Api.Controllers
             }
         }
 
+        public async Task<HttpResponseMessage> Get(long id)
+        {
+            try
+            {
+                var result = await _userRepository.GetUserByIdAsync(id);
+                return Request.CreateResponse(HttpStatusCode.OK, result);
+            }
+            catch
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Could not retrieve user.");
+            }
+        }
+
         [Route("{id}/RoleNames")]
         public async Task<HttpResponseMessage> GetRoleNames(long id)
         {
@@ -69,19 +81,6 @@ namespace codingfreaks.AspNetIdentity.Services.Api.Controllers
             catch
             {
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Could not retrieve users.");
-            }
-        }
-
-        public async Task<HttpResponseMessage> Get(long id)
-        {
-            try
-            {
-                var result = await _userRepository.GetUserByIdAsync(id);
-                return Request.CreateResponse(HttpStatusCode.OK, result);
-            }
-            catch
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Could not retrieve user.");
             }
         }
 

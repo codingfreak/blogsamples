@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.Services
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.Services
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Microsoft.AspNet.Identity;

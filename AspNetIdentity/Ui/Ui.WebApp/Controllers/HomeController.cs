@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-
-namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
+﻿namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
 {
+    using System;
+    using System.Linq;
+    using System.Web.Mvc;
+
     /// <summary>
     /// Controller for all views inside the /Home path.
     /// </summary>
     public class HomeController : Controller
     {
-        public ActionResult Index()
-        {
-            return View();
-        }
+        #region methods
 
         public ActionResult About()
         {
@@ -29,5 +24,12 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
 
             return View();
         }
+
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }

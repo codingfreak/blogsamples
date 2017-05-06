@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
+﻿namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
 {
+    using System;
+    using System.Linq;
     using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
@@ -139,7 +138,11 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
                         ? "Your two-factor authentication provider has been set."
                         : message == ManageMessageId.Error
                             ? "An error has occurred."
-                            : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added." : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed." : "";
+                            : message == ManageMessageId.AddPhoneSuccess
+                                ? "Your phone number was added."
+                                : message == ManageMessageId.RemovePhoneSuccess
+                                    ? "Your phone number was removed."
+                                    : "";
 
             var user = await UserManager.FindByNameAsync(User.Identity.Name);
             var model = new IndexViewModel

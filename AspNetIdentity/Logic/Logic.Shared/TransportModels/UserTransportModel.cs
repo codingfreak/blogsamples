@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace codingfreaks.AspNetIdentity.Logic.Shared.TransportModels
+﻿namespace codingfreaks.AspNetIdentity.Logic.Shared.TransportModels
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Is used to transport user informations between all layers.
     /// </summary>

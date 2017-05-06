@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Data.Core
+﻿namespace codingfreaks.AspNetIdentity.Data.Core
 {
+    using System;
     using System.Diagnostics;
+    using System.Linq;
 
     public static class ContextUtil
     {

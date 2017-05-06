@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -29,6 +28,39 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui
 
         public void Dispose()
         {
+        }
+
+        /// <inheritdoc />
+        public IQueryable<ApplicationUser> Users
+        {
+            get
+            {
+                var result = Task.Run(async () => await ApiClient.GetUsersAsync()).GetAwaiter().GetResult().AsQueryable();
+                return result;
+            }
+        }
+
+        /// <inheritdoc />
+        public Task AddClaimAsync(ApplicationUser user, Claim claim)
+        {
+            return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
+        public Task<IList<Claim>> GetClaimsAsync(ApplicationUser user)
+        {
+            return Task.FromResult<IList<Claim>>(user.Claims.Select(c => new Claim(c.ClaimType, c.ClaimValue)).ToList());
+        }
+
+        /// <inheritdoc />
+        public Task RemoveClaimAsync(ApplicationUser user, Claim claim)
+        {
+            foreach (var item in user.Claims.Where(uc => uc.ClaimValue == claim.Value && uc.ClaimType == claim.Type).ToList())
+            {
+                user.Claims.Remove(item);
+            }
+            // TODO remove all claims on Service
+            return Task.FromResult(0);
         }
 
         /// <inheritdoc />
@@ -149,6 +181,70 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui
         }
 
         /// <inheritdoc />
+        public Task<string> GetPhoneNumberAsync(ApplicationUser user)
+        {
+            return Task.FromResult(user.PhoneNumber);
+        }
+
+        /// <inheritdoc />
+        public Task<bool> GetPhoneNumberConfirmedAsync(ApplicationUser user)
+        {
+            return Task.FromResult(user.PhoneNumberConfirmed);
+        }
+
+        /// <inheritdoc />
+        public Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber)
+        {
+            user.PhoneNumber = phoneNumber;
+            return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
+        public Task SetPhoneNumberConfirmedAsync(ApplicationUser user, bool confirmed)
+        {
+            user.PhoneNumberConfirmed = confirmed;
+            return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
+        public Task AddToRoleAsync(ApplicationUser user, string roleName)
+        {
+            return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
+        public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
+        {
+            return user.RolesResolved ?? (user.RolesResolved = await ApiClient.GetUserRoleNamesAsync(user.Id));
+        }
+
+        /// <inheritdoc />
+        public async Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
+        {
+            var roles = await GetRolesAsync(user);
+            return roles.Contains(roleName);
+        }
+
+        /// <inheritdoc />
+        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public Task<string> GetSecurityStampAsync(ApplicationUser user)
+        {
+            return Task.FromResult(user.SecurityStamp);
+        }
+
+        /// <inheritdoc />
+        public Task SetSecurityStampAsync(ApplicationUser user, string stamp)
+        {
+            user.SecurityStamp = stamp;
+            return Task.FromResult(0);
+        }
+
+        /// <inheritdoc />
         public async Task CreateAsync(ApplicationUser user)
         {
             if (user.Id != 0)
@@ -184,52 +280,6 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui
             await ApiClient.UpdateUserAsync(user);
         }
 
-        #endregion
-
-        #region methods
-
-        /// <inheritdoc />
-        public Task AddClaimAsync(ApplicationUser user, Claim claim)
-        {
-            return Task.FromResult(0);
-        }
-
-        /// <inheritdoc />
-        public Task AddToRoleAsync(ApplicationUser user, string roleName)
-        {
-            return Task.FromResult(0);
-        }
-
-        /// <inheritdoc />
-        public Task<IList<Claim>> GetClaimsAsync(ApplicationUser user)
-        {
-            return Task.FromResult<IList<Claim>>(user.Claims.Select(c => new Claim(c.ClaimType, c.ClaimValue)).ToList());
-        }
-
-        /// <inheritdoc />
-        public Task<string> GetPhoneNumberAsync(ApplicationUser user)
-        {
-            return Task.FromResult(user.PhoneNumber);
-        }
-
-        /// <inheritdoc />
-        public Task<bool> GetPhoneNumberConfirmedAsync(ApplicationUser user)
-        {
-            return Task.FromResult(user.PhoneNumberConfirmed);
-        }
-
-        /// <inheritdoc />
-        public async Task<IList<string>> GetRolesAsync(ApplicationUser user)
-        {
-            return user.RolesResolved ?? (user.RolesResolved = await ApiClient.GetUserRoleNamesAsync(user.Id));
-        }
-
-        /// <inheritdoc />
-        public Task<string> GetSecurityStampAsync(ApplicationUser user)
-        {
-            return Task.FromResult(user.SecurityStamp);
-        }
-
         /// <inheritdoc />
         public Task<bool> GetTwoFactorEnabledAsync(ApplicationUser user)
         {
@@ -237,69 +287,10 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui
         }
 
         /// <inheritdoc />
-        public async Task<bool> IsInRoleAsync(ApplicationUser user, string roleName)
-        {
-            var roles = await GetRolesAsync(user);
-            return roles.Contains(roleName);
-        }
-
-        /// <inheritdoc />
-        public Task RemoveClaimAsync(ApplicationUser user, Claim claim)
-        {
-            foreach (var item in user.Claims.Where(uc => uc.ClaimValue == claim.Value && uc.ClaimType == claim.Type).ToList())
-            {
-                user.Claims.Remove(item);
-            }
-            // TODO remove all claims on Service
-            return Task.FromResult(0);
-        }
-
-        /// <inheritdoc />
-        public Task RemoveFromRoleAsync(ApplicationUser user, string roleName)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public Task SetPhoneNumberAsync(ApplicationUser user, string phoneNumber)
-        {
-            user.PhoneNumber = phoneNumber;
-            return Task.FromResult(0);
-        }
-
-        /// <inheritdoc />
-        public Task SetPhoneNumberConfirmedAsync(ApplicationUser user, bool confirmed)
-        {
-            user.PhoneNumberConfirmed = confirmed;
-            return Task.FromResult(0);
-        }
-
-        /// <inheritdoc />
-        public Task SetSecurityStampAsync(ApplicationUser user, string stamp)
-        {
-            user.SecurityStamp = stamp;
-            return Task.FromResult(0);
-        }
-
-        /// <inheritdoc />
         public Task SetTwoFactorEnabledAsync(ApplicationUser user, bool enabled)
         {
             user.TwoFactorEnabled = enabled;
             return Task.FromResult(0);
-        }
-
-        #endregion
-
-        #region properties
-
-        /// <inheritdoc />
-        public IQueryable<ApplicationUser> Users
-        {
-            get
-            {
-                var result = Task.Run(async () => await ApiClient.GetUsersAsync()).GetAwaiter().GetResult().AsQueryable();
-                return result;
-            }
         }
 
         #endregion

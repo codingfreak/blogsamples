@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
 {
-    using System.Threading.Tasks;
+    using System;
+    using System.Linq;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.Owin;
@@ -14,7 +12,7 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
     using Services;
 
     /// <summary>
-    /// Custom user manager which will use the <see cref="ServiceUserStore"/> to handle users.
+    /// Custom user manager which will use the <see cref="ServiceUserStore" /> to handle users.
     /// </summary>
     public class CustomUserManager : UserManager<ApplicationUser, long>
     {
@@ -80,7 +78,7 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
             }
             return manager;
         }
-        
+
         #endregion
     }
 }

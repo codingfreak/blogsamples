@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Core.EventArguments
+﻿namespace codingfreaks.AspNetIdentity.Logic.Core.EventArguments
 {
+    using System;
+    using System.Linq;
+
     using Autofac;
 
     public class ContainerBuilderEventsArgs : EventArgs
@@ -18,7 +18,7 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.EventArguments
 
         #region properties
 
-        public ContainerBuilder ContainerBuilder { get; private set; }
+        public ContainerBuilder ContainerBuilder { get; }
 
         #endregion
     }

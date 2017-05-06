@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Ui.WebApp
+﻿namespace codingfreaks.AspNetIdentity.Ui.WebApp
 {
+    using System;
+    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Optimization;

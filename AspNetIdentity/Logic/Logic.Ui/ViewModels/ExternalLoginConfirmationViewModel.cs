@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     public class ExternalLoginConfirmationViewModel
     {

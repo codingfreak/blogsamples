@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Shared.Enumerations
+﻿namespace codingfreaks.AspNetIdentity.Logic.Shared.Enumerations
 {
+    using System;
+    using System.Linq;
+
     public enum ManageMessageId
     {
         AddPhoneSuccess,

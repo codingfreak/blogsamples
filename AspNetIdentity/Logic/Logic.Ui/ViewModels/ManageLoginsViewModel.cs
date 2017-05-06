@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Microsoft.AspNet.Identity;
     using Microsoft.Owin.Security;

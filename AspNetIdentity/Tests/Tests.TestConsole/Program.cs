@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Tests.TestConsole
+﻿namespace codingfreaks.AspNetIdentity.Tests.TestConsole
 {
     using System;
+    using System.Linq;
 
     using Autofac;
-
-    using System.Linq;
 
     using Logic.Core.Utils;
     using Logic.Shared.Interfaces;

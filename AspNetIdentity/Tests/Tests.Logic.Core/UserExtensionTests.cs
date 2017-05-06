@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace codingfreaks.AspNetIdentity.Tests.Logic.Core
+﻿namespace codingfreaks.AspNetIdentity.Tests.Logic.Core
 {
+    using System;
+    using System.Linq;
+
     using AspNetIdentity.Logic.Core.Extensions;
     using AspNetIdentity.Logic.Core.Utils;
     using AspNetIdentity.Logic.Shared.Interfaces;
+
     using Autofac;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
+﻿namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
 {
+    using System;
+    using System.Linq;
     using System.Web;
     using System.Web.Mvc;
 
@@ -72,14 +71,8 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
         /// </summary>
         public CustomSignInManager SignInManager
         {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<CustomSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
+            get => _signInManager ?? HttpContext.GetOwinContext().Get<CustomSignInManager>();
+            private set => _signInManager = value;
         }
 
         /// <summary>
@@ -87,14 +80,8 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp.Controllers
         /// </summary>
         public CustomUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<CustomUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<CustomUserManager>();
+            private set => _userManager = value;
         }
 
         #endregion

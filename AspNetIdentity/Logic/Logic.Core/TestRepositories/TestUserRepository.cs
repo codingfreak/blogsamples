@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Core.TestRepositories
+﻿namespace codingfreaks.AspNetIdentity.Logic.Core.TestRepositories
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Data.Core;
@@ -81,6 +80,11 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.TestRepositories
             return Task.FromResult(model.Id as long?);
         }
 
+        public Task<IEnumerable<string>> GetRoleNamesAsync(long userId)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <inheritdoc />
         public Task<UserTransportModel> GetUserByIdAsync(long id)
         {
@@ -132,11 +136,6 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.TestRepositories
         public Task<bool> UserExistsAsync(string userName)
         {
             return Task.FromResult(_store.Value.Any(u => u.UserName.Equals(userName, StringComparison.Ordinal)));
-        }
-
-        public Task<IEnumerable<string>> GetRoleNamesAsync(long userId)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

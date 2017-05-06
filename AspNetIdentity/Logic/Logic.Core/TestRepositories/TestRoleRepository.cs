@@ -1,10 +1,9 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Core.TestRepositories
+﻿namespace codingfreaks.AspNetIdentity.Logic.Core.TestRepositories
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Data.Core;

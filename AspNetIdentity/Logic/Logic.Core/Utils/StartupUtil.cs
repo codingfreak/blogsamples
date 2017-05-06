@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
+﻿namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
 {
-    using System.Collections.Generic;
+    using System;
+    using System.Linq;
     using System.Reflection;
 
     using Autofac;
@@ -14,22 +12,22 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
 
     using EventArguments;
 
-    using Shared.Interfaces;
     using Shared.TransportModels;
-
-    using TestRepositories;
 
     /// <summary>
     /// Provides logic for wiring up often needed components on application startup.
     /// </summary>
     public static class StartupUtil
     {
+        #region events
 
         /// <summary>
         /// Is fired before the AutoFac container is beeing built so that the receiver can do
         /// custom stuff with AutoFac builder.
         /// </summary>
         public static event EventHandler<ContainerBuilderEventsArgs> AutoFacBuilderReady;
+
+        #endregion
 
         #region methods
 
@@ -38,10 +36,10 @@ namespace codingfreaks.AspNetIdentity.Logic.Core.Utils
             // initialize AutoMapper
             Mapper.Initialize(
                 cfg =>
-                {                    
+                {
                     cfg.CreateMap<User, UserTransportModel>();
-                    cfg.CreateMap<UserTransportModel, User>();                    
-                });            
+                    cfg.CreateMap<UserTransportModel, User>();
+                });
             // initialize AutoFac as DI
             var builder = new ContainerBuilder();
             if (runsUnderTest)

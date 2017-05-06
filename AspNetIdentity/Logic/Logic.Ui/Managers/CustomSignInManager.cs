@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
 {
+    using System;
+    using System.Linq;
     using System.Security.Claims;
     using System.Threading.Tasks;
 
@@ -28,7 +27,8 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
         #region methods
 
         /// <summary>
-        /// Factory method for retrieving an instance using the provided <paramref name="options"/> and <paramref name="context"/>.
+        /// Factory method for retrieving an instance using the provided <paramref name="options" /> and
+        /// <paramref name="context" />.
         /// </summary>
         /// <param name="options">The options to use when instantiating.</param>
         /// <param name="context">The OWIN context to use.</param>
@@ -39,7 +39,7 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.Managers
         }
 
         /// <summary>
-        /// Is used to convert the given <paramref name="user"/> into a claims identity.
+        /// Is used to convert the given <paramref name="user" /> into a claims identity.
         /// </summary>
         /// <param name="user">The application user.</param>
         /// <returns>The claims identity.</returns>

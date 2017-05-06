@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace codingfreaks.AspNetIdentity.Logic.Shared.Enumerations
+﻿namespace codingfreaks.AspNetIdentity.Logic.Shared.Enumerations
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Defines possible results for a password check.
     /// </summary>

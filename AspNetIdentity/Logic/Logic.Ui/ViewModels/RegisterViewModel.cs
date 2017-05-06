@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     public class RegisterViewModel
     {
@@ -25,7 +24,7 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Required]        
+        [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
 

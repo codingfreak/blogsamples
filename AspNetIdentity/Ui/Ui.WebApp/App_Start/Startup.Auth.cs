@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Ui.WebApp
+﻿namespace codingfreaks.AspNetIdentity.Ui.WebApp
 {
     using System;
+    using System.Linq;
 
     using Logic.Ui.Managers;
     using Logic.Ui.Models;
@@ -19,10 +17,13 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp
     {
         #region methods
 
-        // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
+        /// <summary>
+        /// Is called by the startup to configure ASP.NET Identity.
+        /// </summary>
+        /// <param name="app">The app builder to use.</param>
         public void ConfigureAuth(IAppBuilder app)
         {
-            // Configure the db context, user manager and signin manager to use a single instance per request            
+            // Configure the custom user manager and signin manager.
             app.CreatePerOwinContext<CustomUserManager>(CustomUserManager.Create);
             app.CreatePerOwinContext<CustomSignInManager>(CustomSignInManager.Create);
             // Enable the application to use a cookie to store information for the signed in user
@@ -37,16 +38,15 @@ namespace codingfreaks.AspNetIdentity.Ui.WebApp
                     {
                         // Enables the application to validate the security stamp when the user logs in.
                         // This is a security feature which is used when you change a password or add an external login to your account.  
-                        OnValidateIdentity =
-                            SecurityStampValidator.OnValidateIdentity<CustomUserManager, ApplicationUser, long>(
-                                TimeSpan.FromMinutes(30),
-                                (manager, user) => user.GenerateUserIdentityAsync(manager),
-                                claimId =>
-                                {
-                                    var id = 0L;
-                                    long.TryParse(claimId.GetUserId(), out id);
-                                    return id;                                    
-                                })
+                        OnValidateIdentity = SecurityStampValidator.OnValidateIdentity<CustomUserManager, ApplicationUser, long>(
+                            TimeSpan.FromMinutes(30),
+                            (manager, user) => user.GenerateUserIdentityAsync(manager),
+                            claimId =>
+                            {
+                                var id = 0L;
+                                long.TryParse(claimId.GetUserId(), out id);
+                                return id;
+                            })
                     }
                 });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);

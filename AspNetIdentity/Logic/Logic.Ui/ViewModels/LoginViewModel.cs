@@ -1,17 +1,12 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
+﻿namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
 {
+    using System;
     using System.ComponentModel.DataAnnotations;
+    using System.Linq;
 
     public class LoginViewModel
     {
         #region properties
-
-        [Required]
-        [Display(Name = "User name")]        
-        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -20,6 +15,10 @@ namespace codingfreaks.AspNetIdentity.Logic.Ui.ViewModels
 
         [Display(Name = "Stay logged in")]
         public bool RememberMe { get; set; }
+
+        [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
 
         #endregion
     }

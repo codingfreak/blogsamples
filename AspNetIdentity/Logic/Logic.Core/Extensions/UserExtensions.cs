@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace codingfreaks.AspNetIdentity.Logic.Core.Extensions
+﻿namespace codingfreaks.AspNetIdentity.Logic.Core.Extensions
 {
+    using System;
+    using System.Linq;
+
     using AutoMapper;
 
     using Data.Core;
+
     using Shared.TransportModels;
 
     /// <summary>

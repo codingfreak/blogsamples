@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Shared.TransportModels
+﻿namespace codingfreaks.AspNetIdentity.Logic.Shared.TransportModels
 {
+    using System;
+    using System.Linq;
+
     /// <summary>
     /// Abstract base class for all transport models.
     /// </summary>

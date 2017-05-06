@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-
-namespace codingfreaks.AspNetIdentity.Logic.Shared.Interfaces
+﻿namespace codingfreaks.AspNetIdentity.Logic.Shared.Interfaces
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Enumerations;
