@@ -2,6 +2,7 @@ using System.Web.Http;
 using WebActivatorEx;
 using codingfreaks.AspNetIdentity.Services.Api;
 using Swashbuckle.Application;
+using System;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -12,6 +13,16 @@ namespace codingfreaks.AspNetIdentity.Services.Api
     /// </summary>
     public class SwaggerConfig
     {
+
+        /// <summary>
+        /// Retrieves the path to the XML comment file produced during the build.
+        /// </summary>
+        /// <returns></returns>
+        protected static string GetXmlCommentsPath()
+        {
+            return $@"{AppDomain.CurrentDomain.BaseDirectory}\bin\AspNetIdentity.Services.Api.xml";
+        }
+
         /// <summary>
         /// Is called by the application startup to initialize Swagger.
         /// </summary>
@@ -103,7 +114,7 @@ namespace codingfreaks.AspNetIdentity.Services.Api
                         // those comments into the generated docs and UI. You can enable this by providing the path to one or
                         // more Xml comment files.
                         //
-                        //c.IncludeXmlComments(GetXmlCommentsPath());
+                        c.IncludeXmlComments(GetXmlCommentsPath());
 
                         // Swashbuckle makes a best attempt at generating Swagger compliant JSON schemas for the various types
                         // exposed in your API. However, there may be occasions when more control of the output is needed.
