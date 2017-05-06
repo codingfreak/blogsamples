@@ -7,8 +7,14 @@ using Swashbuckle.Application;
 
 namespace codingfreaks.AspNetIdentity.Services.Api
 {
+    /// <summary>
+    /// Contains configuration logic for Swagger.
+    /// </summary>
     public class SwaggerConfig
     {
+        /// <summary>
+        /// Is called by the application startup to initialize Swagger.
+        /// </summary>
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;

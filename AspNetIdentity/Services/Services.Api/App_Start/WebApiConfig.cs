@@ -9,10 +9,17 @@
 
     using Logic.Core.Utils;
 
+    /// <summary>
+    /// Central logic to configure Web API on this project.
+    /// </summary>
     public static class WebApiConfig
     {
         #region methods
 
+        /// <summary>
+        /// Is called by the <see cref="WebApiApplication" /> to initialize Web API.
+        /// </summary>
+        /// <param name="config">The HTTP configuration to use.</param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
