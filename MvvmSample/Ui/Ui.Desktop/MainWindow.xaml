@@ -8,115 +8,78 @@
     mc:Ignorable="d"
     Title="{Binding WindowTitle, Mode=OneWay}" Height="434.583" Width="742">
     <Window.IsEnabled>
-        <Binding Path="BindableProperty" Source="{StaticResource MessageListener}"/>
+        <Binding Path="BindableProperty" Source="{StaticResource MessageListener}" />
     </Window.IsEnabled>
     <Window.DataContext>
         <Binding Path="Main" Source="{StaticResource Locator}" />
     </Window.DataContext>
-    <Grid Margin="10">
-        <Grid.Resources>
-            <!-- Defines the template for elements that contain a data error -->
-            <ControlTemplate x:Key="ErrorTemplate">
-                <DockPanel LastChildFill="True">
-                    <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
-                        <AdornedElementPlaceholder />
-                    </Border>
-                </DockPanel>
-            </ControlTemplate>
-            <!-- Defines the default style for GroupBox -->
-            <Style TargetType="{x:Type GroupBox}">
-                <Setter Property="Padding" Value="3 6 3 5" />
-                <Setter Property="HeaderTemplate">
-                    <Setter.Value>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding}" Height="20" />
-                        </DataTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
-            <!-- Defines the default style for TextBox -->
-            <Style TargetType="{x:Type TextBox}">
-                <Setter Property="Margin" Value="4" />
-                <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
-                <Style.Triggers>
-                    <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip"
-                                Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <Style TargetType="{x:Type DatePicker}">
-                <Setter Property="Margin" Value="4" />
-                <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
-                <Style.Triggers>
-                    <Trigger Property="Validation.HasError" Value="true">
-                        <Setter Property="ToolTip"
-                                Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-            <!-- Defines the default style for Label -->
-            <Style TargetType="{x:Type Label}">
-                <Setter Property="Margin" Value="4" />
-            </Style>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <GroupBox Grid.Column="0" Grid.Row="0" Header="Progress-Bar with binding">
-            <ProgressBar Value="{Binding Progress}" MinHeight="20" />
-        </GroupBox>
-        <GroupBox Grid.Column="0" Grid.Row="1" Header="Binding &amp; IDataErrorInfo">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <!-- Firstname -->
-                <Label Content="Firstname:" Grid.Column="0" Grid.Row="0" />
-                <TextBox
-                    Text="{Binding PersonModel.Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                    Grid.Column="1" Grid.Row="0" />
-                <!-- Lastname -->
-                <Label Content="Lastname:" Grid.Column="0" Grid.Row="1" />
-                <TextBox
-                    Text="{Binding PersonModel.Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                    Grid.Column="1" Grid.Row="1" />
-                <!-- Age -->
-                <Label Content="Birthday:" Grid.Column="0" Grid.Row="2" />
-                <DatePicker Grid.Column="1" Grid.Row="2"
-                            SelectedDate="{Binding PersonModel.Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
-                <!-- Age -->
-                <Label Content="Age:" Grid.Column="0" Grid.Row="3" />
-                <Label Content="{Binding PersonModel.Age}" Grid.Column="1" Grid.Row="3"
-                       Background="{Binding PersonModel.Age, Converter={StaticResource AgeToBrushConverter}, Mode=OneWay}" />
-                <!-- OK-Button -->
-                <Button Grid.Row="4"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2"
-                        HorizontalAlignment="Right"
-                        Margin="5"
-                        Content="OK"
-                        Width="100"
-                        Command="{Binding PersonModel.OkCommand}" />
-            </Grid>
-        </GroupBox>
-        <GroupBox Grid.Column="0" Grid.Row="2" Header="Converters">
-            <Button Content="ShowChild" 
-                    Command="{Binding OpenChildCommand, Mode=OneWay}" />
-        </GroupBox>
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Tools">
+                <MenuItem Command="{Binding OpenChildCommand, Mode=OneWay}" Header="Open Child" />
+            </MenuItem>
+        </Menu>
+        <Grid Margin="10" DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox Grid.Column="0" Grid.Row="0" Header="Progress-Bar with binding">
+                <ProgressBar Value="{Binding Progress}" MinHeight="20" />
+            </GroupBox>
+            <GroupBox Grid.Column="0" Grid.Row="1" Header="Binding &amp; IDataErrorInfo">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <!-- Header -->
+                    <TextBlock Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" TextWrapping="Wrap"
+                               Style="{DynamicResource Hint}">
+                        This area demonstrates the automatic display of error messages and validation. Ensure to enter something in Firstname and Lastname
+                        and that the Birthday has a value that results in an age greater or equal than 18 years.
+                    </TextBlock>
+                    <!-- Firstname -->
+                    <Label Content="Firstname:" Grid.Column="0" Grid.Row="1" />
+                    <TextBox
+                        Text="{Binding PersonModel.Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        Grid.Column="1" Grid.Row="1" />
+                    <!-- Lastname -->
+                    <Label Content="Lastname:" Grid.Column="0" Grid.Row="2" />
+                    <TextBox
+                        Text="{Binding PersonModel.Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                        Grid.Column="1" Grid.Row="2" />
+                    <!-- Age -->
+                    <Label Content="Birthday:" Grid.Column="0" Grid.Row="3" />
+                    <DatePicker Grid.Column="1" Grid.Row="3"
+                                SelectedDate="{Binding PersonModel.Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                    <!-- Age -->
+                    <Label Content="Age:" Grid.Column="0" Grid.Row="4" />
+                    <Label Content="{Binding PersonModel.Age}" Grid.Column="1" Grid.Row="3"
+                           Background="{Binding PersonModel.Age, Converter={StaticResource AgeToBrushConverter}, Mode=OneWay}" />
+                    <!-- OK-Button -->
+                    <Button Grid.Row="5"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            HorizontalAlignment="Right"
+                            Margin="5"
+                            Content="OK"
+                            Width="100"
+                            Command="{Binding PersonModel.OkCommand}" />
+                </Grid>
+            </GroupBox>
+        </Grid>
+    </DockPanel>
 </Window>

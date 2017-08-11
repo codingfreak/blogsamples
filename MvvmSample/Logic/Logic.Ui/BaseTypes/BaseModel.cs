@@ -126,7 +126,7 @@
                             Errors.Add(prop.Name, maxLenAttr.ErrorMessage);
                         }
                     }
-                    // further attributes
+                    // TODO further attributes
                 });
             // we have to this because the Dictionary does not implement INotifyPropertyChanged            
             OnPropertyChanged(nameof(HasErrors));

@@ -14,6 +14,58 @@
                                       d:IsDataSource="True" />
             <Desktop:MessageListener x:Key="MessageListener"  />
             <Converters:AgeToBrushConverter x:Key="AgeToBrushConverter" />
+            <!-- Brushes and colors -->
+            <SolidColorBrush x:Key="HintBrúsh" Color="#FF429E42" />
+            <!-- Defines the template for elements that contain a data error -->
+            <ControlTemplate x:Key="ErrorTemplate">
+                <DockPanel LastChildFill="True">
+                    <Border DockPanel.Dock="Top" BorderBrush="Orange" BorderThickness="1">
+                        <AdornedElementPlaceholder />
+                    </Border>
+                </DockPanel>
+            </ControlTemplate>
+            <!-- Defines the default style for GroupBox -->
+            <Style TargetType="GroupBox">
+                <Setter Property="Padding" Value="3 6 3 5" />
+                <Setter Property="HeaderTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" Height="20" />
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- Defines the default style for TextBox -->
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="4" />
+                <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip"
+                                Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!-- Defines the default style for a date picker -->
+            <Style TargetType="DatePicker">
+                <Setter Property="Margin" Value="4" />
+                <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ErrorTemplate}" />
+                <Style.Triggers>
+                    <Trigger Property="Validation.HasError" Value="true">
+                        <Setter Property="ToolTip"
+                                Value="{Binding (Validation.Errors).CurrentItem.ErrorContent, RelativeSource={x:Static RelativeSource.Self}}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!-- Defines the default style for Label -->
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="4" />
+            </Style>
+            <!-- Defines a textblock class for hints -->
+            <Style TargetType="TextBlock" x:Key="Hint">
+                <Setter Property="Foreground" Value="{StaticResource HintBrúsh}" />
+                <Setter Property="FontSize" Value="10" />
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
