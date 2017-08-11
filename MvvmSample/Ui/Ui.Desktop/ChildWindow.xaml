@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:codingfreaks.blogsamples.MvvmSample.Ui.Desktop"
         mc:Ignorable="d"
-        Title="ChildWindow" Height="300" Width="300">
+        Title="ChildWindow" Height="300" Width="300" WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <Binding Path="Child" Source="{StaticResource Locator}" />
     </Window.DataContext>

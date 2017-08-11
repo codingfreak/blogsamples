@@ -6,7 +6,7 @@
     xmlns:Converters="clr-namespace:codingfreaks.blogsamples.MvvmSample.Logic.Ui.Converters;assembly=MvvmSample.Logic.Ui"
     x:Class="codingfreaks.blogsamples.MvvmSample.Ui.Desktop.MainWindow"
     mc:Ignorable="d"
-    Title="{Binding WindowTitle, Mode=OneWay}" Height="434.583" Width="742">
+    Title="{Binding WindowTitle, Mode=OneWay}" Height="434.583" Width="742"  WindowStartupLocation="CenterScreen">
     <Window.IsEnabled>
         <Binding Path="BindableProperty" Source="{StaticResource MessageListener}" />
     </Window.IsEnabled>
