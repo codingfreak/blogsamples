@@ -6,7 +6,8 @@
     xmlns:Converters="clr-namespace:codingfreaks.blogsamples.MvvmSample.Logic.Ui.Converters;assembly=MvvmSample.Logic.Ui"
     x:Class="codingfreaks.blogsamples.MvvmSample.Ui.Desktop.MainWindow"
     mc:Ignorable="d"
-    Title="{Binding WindowTitle, Mode=OneWay}" Height="379.839" Width="742" MinHeight="400" MinWidth="700"  WindowStartupLocation="CenterScreen">
+    Title="{Binding WindowTitle, Mode=OneWay}" Height="379.839" Width="742" MinHeight="400" MinWidth="700"
+    WindowStartupLocation="CenterScreen">
     <Window.IsEnabled>
         <Binding Path="BindableProperty" Source="{StaticResource MessageListener}" />
     </Window.IsEnabled>
@@ -67,7 +68,7 @@
                                 SelectedDate="{Binding PersonModel.Birthday, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
                     <!-- Age -->
                     <Label Content="Age:" Grid.Column="0" Grid.Row="4" />
-                    <Label Content="{Binding PersonModel.Age}" Grid.Column="1" Grid.Row="3"
+                    <Label Content="{Binding PersonModel.Age}" Grid.Column="1" Grid.Row="4"
                            Background="{Binding PersonModel.Age, Converter={StaticResource AgeToBrushConverter}, Mode=OneWay}" />
                     <!-- OK-Button -->
                     <Button Grid.Row="5"
@@ -79,6 +80,53 @@
                             Width="100"
                             Command="{Binding PersonModel.OkCommand}" />
                 </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Grid.Row="0" Header="Item Sources" Grid.RowSpan="2">
+                <DataGrid ItemsSource="{Binding Persons}" AutoGenerateColumns="False" SelectedItem="{Binding PersonModel, Mode=TwoWay}">
+                    <DataGrid.Resources>
+                        <Style x:Key="ErrorTextInput" TargetType="{x:Type TextBox}">
+                            <Setter Property="Padding" Value="-2" />
+                            <Style.Triggers>
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Setter Property="Background" Value="Red" />
+                                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.RowValidationErrorTemplate>
+                        <ControlTemplate>
+                            <Grid Margin="0,-2,0,-2"
+                                  ToolTip="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGridRow}}, Path=(Validation.Errors)[0].ErrorContent}">
+                                <Ellipse StrokeThickness="0" Fill="Red" 
+                                         Width="{TemplateBinding FontSize}" 
+                                         Height="{TemplateBinding FontSize}" />
+                                <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
+                                           FontWeight="Bold" Foreground="White" 
+                                           HorizontalAlignment="Center"  />
+                            </Grid>
+                        </ControlTemplate>
+                    </DataGrid.RowValidationErrorTemplate>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Firstname" 
+                                            Binding="{Binding Firstname, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+                                            EditingElementStyle="{StaticResource ErrorTextInput}" />
+                        <DataGridTextColumn Header="Lastname" 
+                                            Binding="{Binding Lastname, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" 
+                                            EditingElementStyle="{StaticResource ErrorTextInput}" />
+                        <DataGridTextColumn Header="Birthday" 
+                                            Binding="{Binding Birthday, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" 
+                                            EditingElementStyle="{StaticResource ErrorTextInput}"  />
+                        <DataGridTextColumn Header="Age" 
+                                            Binding="{Binding Age}" 
+                                            IsReadOnly="True"  />
+                    </DataGrid.Columns>
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Set date" Command="{Binding SetSomeDateCommand}" CommandParameter="{Binding PersonModel}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
+                </DataGrid>
             </GroupBox>
         </Grid>
     </DockPanel>

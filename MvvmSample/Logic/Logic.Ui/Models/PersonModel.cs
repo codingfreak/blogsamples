@@ -57,7 +57,7 @@
         /// The firstname of the person.
         /// </summary>
         [Required(AllowEmptyStrings = false, ErrorMessage = "First name must not be empty.")]
-        [MaxLength(20, ErrorMessage = "Maximum of 50 characters is allowed.")]
+        [MaxLength(20, ErrorMessage = "Maximum of 20 characters is allowed.")]
         public string Firstname { get; set; }
 
         /// <summary>
