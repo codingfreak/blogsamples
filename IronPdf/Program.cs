@@ -29,9 +29,23 @@ namespace codingfreaks.blogsamples.IronPdf
             var template = Handlebars.Compile(pageTemplate);
             var result = template(invoice);
             // render to PDF
-            var renderer = new HtmlToPdf();
-            var pdf = await renderer.RenderHtmlAsPdfAsync(result);
-            pdf.SaveAs("Result.pdf");
+            var baseUri = new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates"));
+            using (var renderer = new HtmlToPdf
+            {
+                PrintOptions =
+                {
+                    FirstPageNumber = 1,
+                    Footer = new SimpleHeaderFooter
+                    {
+                        DrawDividerLine = true,
+                        RightText = "Page {page} of {total-pages}"
+                    }
+                }
+            })
+            {
+                var pdf = await renderer.RenderHtmlAsPdfAsync(result, baseUri);
+                pdf.SaveAs("Result.pdf");
+            }
             Console.WriteLine("Hello World!");
         }
     }

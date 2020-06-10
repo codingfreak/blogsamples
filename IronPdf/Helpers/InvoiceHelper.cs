@@ -28,7 +28,7 @@
                         Title = loremIpsumGenerator.Next(1,1),
                         Quantity = random.Next(1, 20),
                         Unit = wordGenerator.Next().Substring(0, 3),
-                        UnitPrice = random.Next(1, 100000)
+                        UnitPrice = random.Next(1, 1000)
                     }).ToArray()
             };
         }

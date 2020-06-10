@@ -1,22 +1,63 @@
-﻿body { }
+﻿* { font-family: Arial, Helvetica, sans-serif }
+
+body { }
 
 table.positions {
+    border-collapse: collapse;
     page-break-inside: auto;
     width: 100%;
 }
 
-table.positions tr {
+table .positions tr {
     page-break-after: auto;
     page-break-inside: avoid;
 }
 
 table.positions > thead {
-    display: table-header-group;
-    text-align: left;
     background-color: black;
     color: white;
+    display: table-header-group;
+    text-align: left;
+}
+
+table.positions th {
+    height: 40px;
+    vertical-align: middle;
+}
+
+table.positions > tbody > tr:first-child > td {
+    padding-top: 10px;
+}
+
+table.positions > tbody > td {
+    vertical-align: top;
 }
 
 table.positions > tfoot { display: table-footer-group }
 
+table.positions > tfoot > tr:first-child > td {
+    border-top: 1px solid black;
+    padding-top: 40px;
+}
+
+table.positions > tfoot > tr:last-child > td {
+    border-bottom: 1px solid black;
+    border-bottom-style: double;
+    padding-bottom: 10px;
+}
+
 .right { text-align: right; }
+
+.header { min-height: 300px; }
+
+.header:after { clear: both; }
+
+.header-text { float: left }
+
+.logo {
+    background: url('logo.jpg') 50% 50% no-repeat;
+    background-size: contain;
+    float: right;
+    height: 200px;
+    width: 200px;
+}

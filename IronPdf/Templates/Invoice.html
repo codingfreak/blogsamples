@@ -2,10 +2,16 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <link rel="stylesheet" href="Templates/Invoice.css" />
+        <link rel="stylesheet" href="Invoice.css" />
     </head>
     <body>
-        <h1>Invoice No. {{Number}}</h1>
+        <div class="header">
+            <div class="header-text">
+                <h1>Invoice</h1>
+                <p>Number {{Number}}</p>
+            </div>
+            <div class="logo"></div>
+        </div>
         <table class="positions">
             <colgroup>
                 <col style="width: 40px" />
