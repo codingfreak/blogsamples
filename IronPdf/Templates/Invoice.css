@@ -1,0 +1,22 @@
+﻿body { }
+
+table.positions {
+    page-break-inside: auto;
+    width: 100%;
+}
+
+table.positions tr {
+    page-break-after: auto;
+    page-break-inside: avoid;
+}
+
+table.positions > thead {
+    display: table-header-group;
+    text-align: left;
+    background-color: black;
+    color: white;
+}
+
+table.positions > tfoot { display: table-footer-group }
+
+.right { text-align: right; }

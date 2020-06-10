@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="Templates/Invoice.css" />
+    </head>
+    <body>
+        <h1>Invoice No. {{Number}}</h1>
+        <table class="positions">
+            <colgroup>
+                <col style="width: 40px" />
+                <col />
+                <col style="width: 100px" />
+                <col style="width: 80px" />
+                <col style="width: 120px" />
+                <col style="width: 120px" />
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>Pos.</th>
+                    <th>Title</th>
+                    <th class="right">Amount</th>
+                    <th>Unit</th>
+                    <th class="right">Price</th>
+                    <th class="right">Pos.-Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#Positions}}
+                {{> positionRow}}
+                {{/Positions}}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">Total (without taxes):</td>
+                    <td class="right">{{PriceWithoutTaxesFormatted}}</td>
+                </tr>
+                <tr>
+                    <td colspan="5">Taxes:</td>
+                    <td class="right">{{TaxesFormatted}}</td>
+                </tr>
+                <tr>
+                    <td colspan="5">Total (including taxes):</td>
+                    <td class="right">{{PriceIncludingTaxesFormatted}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </body>
+</html>
