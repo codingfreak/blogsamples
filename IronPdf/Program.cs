@@ -4,6 +4,7 @@ using System.Linq;
 namespace codingfreaks.blogsamples.IronPdf
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Threading.Tasks;
 
@@ -29,7 +30,6 @@ namespace codingfreaks.blogsamples.IronPdf
             var template = Handlebars.Compile(pageTemplate);
             var result = template(invoice);
             // render to PDF
-            var baseUri = new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates"));
             using (var renderer = new HtmlToPdf
             {
                 PrintOptions =
@@ -43,10 +43,22 @@ namespace codingfreaks.blogsamples.IronPdf
                 }
             })
             {
+                var baseUri = new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates"));
                 var pdf = await renderer.RenderHtmlAsPdfAsync(result, baseUri);
                 pdf.SaveAs("Result.pdf");
             }
-            Console.WriteLine("Hello World!");
+            // open the preview (only Windows)
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Result.pdf");
+            var previewProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "explorer",
+                    Arguments = $@"""{path}"""
+                }
+            };
+            previewProcess.Start();
+            Console.WriteLine("PDF generated.");
         }
     }
 }

@@ -21,12 +21,12 @@ table.positions > thead {
 }
 
 table.positions th {
-    height: 40px;
+    height: 1cm;
     vertical-align: middle;
 }
 
 table.positions > tbody > tr:first-child > td {
-    padding-top: 10px;
+    padding-top: .5cm;
 }
 
 table.positions > tbody > td {
@@ -37,18 +37,18 @@ table.positions > tfoot { display: table-footer-group }
 
 table.positions > tfoot > tr:first-child > td {
     border-top: 1px solid black;
-    padding-top: 40px;
+    padding-top: 1cm;
 }
 
 table.positions > tfoot > tr:last-child > td {
     border-bottom: 1px solid black;
     border-bottom-style: double;
-    padding-bottom: 10px;
+    padding-bottom: .5cm;
 }
 
 .right { text-align: right; }
 
-.header { min-height: 300px; }
+.header { min-height: 10cm; }
 
 .header:after { clear: both; }
 
@@ -58,6 +58,6 @@ table.positions > tfoot > tr:last-child > td {
     background: url('logo.jpg') 50% 50% no-repeat;
     background-size: contain;
     float: right;
-    height: 200px;
-    width: 200px;
+    height: 6cm;
+    width: 6cm;
 }
