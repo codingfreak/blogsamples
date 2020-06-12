@@ -18,7 +18,31 @@ namespace codingfreaks.blogsamples.IronPdf
 
     class Program
     {
+
+        private static string _targetFilePath;
+
         static async Task Main(string[] args)
+        {
+            _targetFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Result.pdf");
+            await SimpleTestAsync();
+            //await TestInvoiceAsync();
+            // open the preview (only Windows)
+            var previewProcess = new Process
+            {
+                StartInfo =
+                {
+                    FileName = "explorer",
+                    Arguments = $@"""{_targetFilePath}"""
+                }
+            };
+            previewProcess.Start();
+            Console.WriteLine("PDF generated.");
+        }
+
+        /**
+         * Performs a test by generating an invoice PDF using IronPDf.
+        **/
+        private static async Task TestInvoiceAsync()
         {
             // generate invoice data
             var invoice = InvoiceHelper.GenerateRandomInvoice(10);
@@ -45,20 +69,8 @@ namespace codingfreaks.blogsamples.IronPdf
             {
                 var baseUri = new Uri(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Templates"));
                 var pdf = await renderer.RenderHtmlAsPdfAsync(result, baseUri);
-                pdf.SaveAs("Result.pdf");
+                pdf.SaveAs(_targetFilePath);
             }
-            // open the preview (only Windows)
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Result.pdf");
-            var previewProcess = new Process
-            {
-                StartInfo =
-                {
-                    FileName = "explorer",
-                    Arguments = $@"""{path}"""
-                }
-            };
-            previewProcess.Start();
-            Console.WriteLine("PDF generated.");
         }
     }
 }
