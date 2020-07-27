@@ -35,8 +35,12 @@
         /// Retrieves a list of all articles available.
         /// </summary>
         /// <returns>The unordered list of articles.</returns>
+        /// <response code="200">At least 1 article was retrieved.</response>
+        /// <response code="404">No orders found.</response>
         [HttpGet]
-        [MapToApiVersion("1.1")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<ArticleModel>), 200)]
+        [ProducesResponseType(404)]
         public IEnumerable<ArticleModel> Get()
         {
             return new[]

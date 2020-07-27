@@ -1,21 +1,22 @@
 namespace ApiVersioningSample
 {
     using System;
+    using System.IO;
     using System.Linq;
-
-    using Filters;
+    using System.Reflection;
 
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
-    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ApiExplorer;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.OpenApi.Models;
+    using Microsoft.Extensions.Options;
+    using Microsoft.Extensions.PlatformAbstractions;
 
     using Swashbuckle.AspNetCore.SwaggerGen;
 
     /// <summary>
-    /// Provides the implementation of the startup logic called by <see cref="Program"/>.
+    /// Provides the implementation of the startup logic called by <see cref="Program" />.
     /// </summary>
     public class Startup
     {
@@ -26,7 +27,8 @@ namespace ApiVersioningSample
         /// </summary>
         /// <param name="app">The app builder.</param>
         /// <param name="env">The web hosting environment.</param>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <param name="provider">The description provider for API versioning.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -42,11 +44,13 @@ namespace ApiVersioningSample
                 });
             app.UseSwagger();
             app.UseSwaggerUI(
-                c =>
+                options =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "codingfreaks API v1.0");
-                    c.SwaggerEndpoint("/swagger/v1.1/swagger.json", "codingfreaks API v1.1");
-                    c.SwaggerEndpoint("/swagger/v2.0/swagger.json", "codingfreaks API v2.0");
+                    // build a swagger endpoint for each discovered API version
+                    foreach (var description in provider.ApiVersionDescriptions)
+                    {
+                        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                    }
                 });
         }
 
@@ -57,49 +61,48 @@ namespace ApiVersioningSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddApiVersioning();
-            services.AddSwaggerGen(
-                c =>
+            services.AddApiVersioning(
+                options =>
                 {
-                    c.SwaggerDoc(
-                        "v1.0",
-                        new OpenApiInfo
-                        {
-                            Title = "codingfreaks API",
-                            Version = "v1.0"
-                        });
-                    c.SwaggerDoc(
-                        "v1.1",
-                        new OpenApiInfo
-                        {
-                            Title = "codingfreaks API",
-                            Version = "v1.1"
-                        });
-                    c.SwaggerDoc(
-                        "v2.0",
-                        new OpenApiInfo
-                        {
-                            Title = "codingfreaks API",
-                            Version = "v2.0"
-                        });
-                    // configure filters
-                    c.OperationFilter<RemoveVersionParameterFilter>();
-                    c.DocumentFilter<ReplaceVersionWithExactValueInPathFilter>();
-                    // Take API versioning attributes from ASP.NET into account
-                    c.DocInclusionPredicate(
-                        (version, desc) =>
-                        {
-                            var versionAttributes = desc.CustomAttributes().OfType<ApiVersionAttribute>()
-                                .SelectMany(attr => attr.Versions);
-                            var mappingAttributes = desc.CustomAttributes().OfType<MapToApiVersionAttribute>()
-                                .SelectMany(attr => attr.Versions).ToArray();
-                            return versionAttributes.Any(v => $"v{v}" == version)
-                                   && (!mappingAttributes.Any() || mappingAttributes.Any(v => $"v{v}" == version));
-                        });
-                    c.EnableAnnotations();
-                    //c.IncludeXmlComments(
-                    //    $"{AppDomain.CurrentDomain.BaseDirectory}/ApiVersioningSample.xml");
+                    // reporting api versions will return the headers "api-supported-versions" and "api-deprecated-versions"
+                    options.ReportApiVersions = true;
                 });
+            services.AddVersionedApiExplorer(
+                options =>
+                {
+                    // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
+                    // note: the specified format code will format the version as "'v'major[.minor][-status]"
+                    options.GroupNameFormat = "'v'VVV";
+                    // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+                    // can also be used to control the format of the API version in route templates
+                    options.SubstituteApiVersionInUrl = true;
+                });
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+            services.AddSwaggerGen(
+                options =>
+                {
+                    // add a custom operation filter which sets default values
+                    //options.OperationFilter<SwaggerDefaultValues>();
+                    // integrate xml comments
+                    options.IncludeXmlComments(XmlCommentsFilePath);
+                });
+        }
+
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Retrieves the absolute file path of the XML documentation file.
+        /// </summary>
+        private static string XmlCommentsFilePath
+        {
+            get
+            {
+                var basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                var fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
+                return Path.Combine(basePath, fileName);
+            }
         }
 
         #endregion
