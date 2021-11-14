@@ -1,1 +1,1 @@
-New-AzDeployment -Name deploy -TemplateFile .\test.bicep -Location westeurope
+New-AzDeployment -Name deploy -TemplateFile .\test.bicep -TemplateParameterFile .\parameters.json -Location westeurope
