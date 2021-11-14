@@ -1,0 +1,1 @@
+New-AzDeployment -Name deploy -TemplateFile .\test.bicep -Location westeurope
