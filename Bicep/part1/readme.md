@@ -1,6 +1,6 @@
 # Summary
 
-This area contains information used in the Youtube tutorial (Bicep Part 1)[].
+This area contains information used in the Youtube tutorial [Bicep Part 1](https://youtu.be/ISoELSyuY_M).
 
 The files in the `images` folder where used during the presentation.
 
