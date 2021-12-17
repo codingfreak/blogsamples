@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "projectName": {
+            "value": "cfdemo"
+        },
+		"stageName": {
+            "value": "test"
+        },
+		"location": {
+            "value": "westeurope"
+        },
+        "logAnalyticsWorkspaceSubscriptionId": {
+            "value": "42261c8d-1cdb-41e1-9934-5011fd19bc97"
+        },		
+        "logAnalyticsWorkspaceResourceGroupName": {
+            "value": "rg-monitoring"
+        },
+        "logAnalyticsWorkspaceName": {
+            "value": "log-dd-monitoring"
+        }		
+    }
+}
