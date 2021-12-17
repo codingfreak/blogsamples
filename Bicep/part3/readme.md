@@ -1,6 +1,6 @@
 # Summary
 
-This area contains information used in the Youtube tutorial [Bicep Part 3]().
+This area contains information used in the Youtube tutorial [Bicep Part 3](https://youtu.be/R4i1hn8RGiQ).
 
 It shows the basic usage of modules. We are deploying a resource group together with an storage account in one step.
 
