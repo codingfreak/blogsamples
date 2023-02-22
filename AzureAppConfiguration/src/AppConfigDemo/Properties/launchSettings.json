@@ -4,7 +4,7 @@
     "AppConfigDemo": {
       "commandName": "Project",
       "environmentVariables": {
-        
+        "APPCONFIG_CONNECTIONSTRING": "Endpoint=https://acfg-cf-appconfig-demo.azconfig.io;Id=BWni-l9-s0:I9uncbW2l6k3F0gQAxaO;Secret=IADDGBWSxlpjmA2OV49jomyJTviIsZp8hqxuCxqJmmY="
       }
     }
   }

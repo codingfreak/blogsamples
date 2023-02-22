@@ -1,0 +1,82 @@
+pool:
+    vmImage: 'ubuntu-latest'
+
+variables:
+    - name: 'Solution'
+      value: 'src/Demo.sln'
+    - name: 'BuildConfiguration'
+      value: 'Release'
+    - name: 'TestProjectFilter'
+      value: 'src/**/*test*.csproj'
+
+trigger: none
+
+steps:
+    - task: CopyFiles@2
+      displayName: Copy Infrastructure script components
+      inputs:
+          sourceFolder: $(Build.SourcesDirectory)/infrastructure
+          contents: '*.*'
+          targetFolder: $(Build.ArtifactStagingDirectory)/infrastructure
+
+    - task: CopyFiles@2
+      displayName: Copy AzureDevops script components
+      inputs:
+          sourceFolder: $(Build.SourcesDirectory)/.azuredevops/scripts
+          contents: '*.*'
+          targetFolder: $(Build.ArtifactStagingDirectory)/pipeline-scripts
+
+    - task: AzurePowerShell@5
+      displayName: Build BICEP
+      inputs:
+          azureSubscription: 'DEVDEER Test'
+          scriptType: filePath
+          scriptPath: $(Build.SourcesDirectory)/infrastructure/build.ps1
+          azurePowerShellVersion: 'latestVersion'
+          FailOnStandardError: false
+          pwsh: true
+
+    - task: CopyFiles@2
+      displayName: Copy ARM templates to staging
+      inputs:
+          sourceFolder: $(Build.SourcesDirectory)/infrastructure/arm-output
+          contents: '*.json'
+          targetFolder: $(Build.ArtifactStagingDirectory)/arm-templates
+
+    - task: UseDotNet@2
+      displayName: Use DotNet 7
+      inputs:
+          version: '7.0.x'
+
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+          projects: '$(Solution)'
+          arguments: '--configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+          projects: '$(Solution)'
+          arguments: '--no-restore --configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+          command: test
+          projects: '$(TestProjectFilter)'
+          arguments: '--no-restore --no-build --configuration $(BuildConfiguration)'
+
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+          command: publish
+          publishWebProjects: True
+          arguments: '--no-restore --no-build --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+          zipAfterPublish: True
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact'
+      inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      condition: succeededOrFailed()

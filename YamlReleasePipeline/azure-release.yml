@@ -1,0 +1,168 @@
+variables:
+  - name: 'vmImageName'
+    value: 'ubuntu-latest'
+  - name: 'serviceConnectionName'
+    value: 'DEVDEER Test'
+  - name: 'project'
+    value: 'cfdemo'
+
+resources:
+  pipelines:
+    - pipeline: ci
+      source: 'Demo CI'
+      trigger: true
+
+pool:
+  vmImage: $(vmImageName)
+
+trigger: none
+
+stages:
+  - stage: Integration
+    displayName: Integration
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy'
+        environment: 'Integration'
+        pool:
+          vmImage: $(vmImageName)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: ci
+                  displayName: 'Download Artifact'
+                  artifact: drop
+                - task: PowerShell@2
+                  displayName: 'Install DEVDEER Bicep Modules'
+                  inputs:
+                    targetType: filePath
+                    filePath: '$(Pipeline.Workspace)/ci/drop/infrastructure/install-modules.ps1'
+                    pwsh: true
+                    workingDirectory: '$(Pipeline.Workspace)/ci/drop/infrastructure'
+                - task: AzurePowerShell@5
+                  displayName: 'Deploy Bicep'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    ScriptPath: '$(Pipeline.Workspace)/ci/drop/infrastructure/deploy.ps1'
+                    ScriptArguments: '-Stage int'
+                    azurePowerShellVersion: LatestVersion
+                    pwsh: true
+                    workingDirectory: '$(Pipeline.Workspace)/ci/drop/infrastructure'
+                - task: AzureAppServiceManage@0
+                  displayName: 'Stop Deploy Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    Action: 'Stop Azure App Service'
+                    WebAppName: 'ui-dd-$(project)-int'
+                    SpecifySlotOrASE: true
+                    ResourceGroupName: 'rg-$(project)-int'
+                    Slot: deploy
+                - task: AzureRmWebAppDeployment@4
+                  displayName: 'Deploy Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    appType: 'webAppLinux'
+                    WebAppName: 'ui-dd-$(project)-int'
+                    deployToSlotOrASE: true
+                    ResourceGroupName: 'rg-$(project)-int'
+                    SlotName: deploy
+                    packageForLinux: '$(Pipeline.Workspace)/**/Ui.WebApp.zip'
+                - task: AzureAppServiceManage@0
+                  displayName: 'Start Deploy Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    Action: 'Start Azure App Service'
+                    WebAppName: 'ui-dd-$(project)-int'
+                    SpecifySlotOrASE: true
+                    ResourceGroupName: 'rg-$(project)-int'
+                    Slot: deploy
+                - task: PowerShell@2
+                  displayName: 'Check Slot Health'
+                  inputs:
+                    targetType: filePath
+                    filePath: '$(Pipeline.Workspace)/ci/drop/pipeline-scripts/check-health.ps1'
+                    workingDirectory: '$(Pipeline.Workspace)/ci/drop/pipeline-scripts'
+                    arguments: '-Stage int'
+                    pwsh: true
+                - task: AzureAppServiceManage@0
+                  displayName: 'Swap Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    WebAppName: 'ui-dd-$(project)-int'
+                    ResourceGroupName: 'rg-$(project)-int'
+                    SourceSlot: deploy
+  - stage: Test
+    displayName: Test
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy'
+        environment: 'Test'
+        pool:
+          vmImage: $(vmImageName)
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: ci
+                  displayName: 'Download Artifact'
+                  artifact: drop
+                - task: PowerShell@2
+                  displayName: 'Install DEVDEER Bicep Modules'
+                  inputs:
+                    targetType: filePath
+                    filePath: '$(Pipeline.Workspace)/ci/drop/infrastructure/install-modules.ps1'
+                    pwsh: true
+                    workingDirectory: '$(Pipeline.Workspace)/ci/drop/infrastructure'
+                - task: AzurePowerShell@5
+                  displayName: 'Deploy Bicep'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    ScriptPath: '$(Pipeline.Workspace)/ci/drop/infrastructure/deploy.ps1'
+                    ScriptArguments: '-Stage test'
+                    azurePowerShellVersion: LatestVersion
+                    pwsh: true
+                    workingDirectory: '$(Pipeline.Workspace)/ci/drop/infrastructure'
+                - task: AzureAppServiceManage@0
+                  displayName: 'Stop Deploy Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    Action: 'Stop Azure App Service'
+                    WebAppName: 'ui-dd-$(project)-test'
+                    SpecifySlotOrASE: true
+                    ResourceGroupName: 'rg-$(project)-test'
+                    Slot: deploy
+                - task: AzureRmWebAppDeployment@4
+                  displayName: 'Deploy Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    appType: 'webAppLinux'
+                    WebAppName: 'ui-dd-$(project)-test'
+                    deployToSlotOrASE: true
+                    ResourceGroupName: 'rg-$(project)-test'
+                    SlotName: deploy
+                    packageForLinux: '$(Pipeline.Workspace)/**/Ui.WebApp.zip'
+                - task: AzureAppServiceManage@0
+                  displayName: 'Start Deploy Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    Action: 'Start Azure App Service'
+                    WebAppName: 'ui-dd-$(project)-test'
+                    SpecifySlotOrASE: true
+                    ResourceGroupName: 'rg-$(project)-test'
+                    Slot: deploy
+                - task: PowerShell@2
+                  displayName: 'Check Slot Health'
+                  inputs:
+                    targetType: filePath
+                    filePath: '$(Pipeline.Workspace)/ci/drop/pipeline-scripts/check-health.ps1'
+                    workingDirectory: '$(Pipeline.Workspace)/ci/drop/pipeline-scripts'
+                    arguments: '-Stage test'
+                    pwsh: true
+                - task: AzureAppServiceManage@0
+                  displayName: 'Swap Slot'
+                  inputs:
+                    azureSubscription: $(serviceConnectionName)
+                    WebAppName: 'ui-dd-$(project)-test'
+                    ResourceGroupName: 'rg-$(project)-test'
+                    SourceSlot: deploy
