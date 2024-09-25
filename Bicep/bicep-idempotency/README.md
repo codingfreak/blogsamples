@@ -1,5 +1,13 @@
 # BICEP Idempotency broken
 
+## Video
+
+<div align="left">
+      <a href="https://youtu.be/MM5r7HCeiwk">
+         <img src="https://img.youtube.com/vi/MM5r7HCeiwk/0.jpg" style="width:50%;">
+      </a>
+</div>
+
 ## Summary
 
 This
