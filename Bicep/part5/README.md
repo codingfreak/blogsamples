@@ -1,5 +1,9 @@
 # Bicep Part 5
 
+## Disclaimer
+
+**Don't take this series as an advice to use the presented tools in your environment! You could because everything is released on public sources (it is not open sourced yet). However all of this is highly opinionated!**
+
 ## Summary
 
 In this part I want to start over where we left Bicep in 2022. Bicep has evolved and a lot of stuff is better now. On the other hand it is still at 0.31 and a lot of the problem still exist.
