@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <RootNamespace>codingfreaks.ApiConversion.$(MSBuildProjectName)</RootNamespace>
+        <AssemblyName>ApiConversion.$(MSBuildProjectName)</AssemblyName>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Logic.Models\Logic.Models.csproj" />
+    </ItemGroup>
+</Project>
