@@ -11,9 +11,10 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Controllers
     /// Provides endpoints for weather data.
     /// </summary>
     [ApiController]
-    [ApiVersion(1.0)]
-    [ApiVersion(2.0)]
-    [Route("api/v{version:apiVersion}/[controller]")]
+    //[ApiVersion(1.0)]
+    //[ApiVersion(2.0)]
+    //[Route("api/v{version:apiVersion}/[controller]")]
+    [Route("[controller]")]
     [Produces("application/json")]
     public class WeatherForecastController : ControllerBase
     {

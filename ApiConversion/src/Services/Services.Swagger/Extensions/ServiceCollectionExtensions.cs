@@ -10,10 +10,19 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
 
     using Swashbuckle.AspNetCore.SwaggerGen;
 
+    /// <summary>
+    /// Provides extension methods for <see cref="IServiceCollection"/>.
+    /// </summary>
     internal static class ServiceCollectionExtensions
     {
         #region methods
 
+        /// <summary>
+        /// Adds API versionning to the DI.
+        /// </summary>
+        /// <param name="services">The DI container.</param>
+        /// <param name="options">The Swagger options.</param>
+        /// <returns>The configured DI container.</returns>
         public static IServiceCollection AddApiVersioningInternal(this IServiceCollection services, SwaggerOptions options)
         {
             services.AddApiVersioning(
@@ -38,17 +47,24 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
             return services;
         }
 
+        /// <summary>
+        /// Adds Swagger generation to the DI.
+        /// </summary>
+        /// <param name="services">The DI container.</param>
+        /// <param name="builder">The web-app-builder.</param>
+        /// <param name="options">The Swagger options.</param>
+        /// <returns>The configured DI container.</returns>
         public static IServiceCollection AddSwaggerGenInternal(this IServiceCollection services, WebApplicationBuilder builder, SwaggerOptions options)
         {
             services.AddSwaggerGen(
                 opt =>
                 {
                     opt.UseVersioning(options, builder);
-                    opt.CustomOperationIds(
-                        e =>
-                            $"{e.ActionDescriptor.RouteValues["controller"]?.ToLowerInvariant() ?? "unkown"}-{e.ActionDescriptor.RouteValues["action"]?.ToLowerInvariant() ?? "unkown"}-{e.HttpMethod?.ToLowerInvariant() ?? "unkown"}");
-                    opt.UseOauth(options);
-                    opt.UseXmlFile();
+                    //opt.UseOauth(options);
+                    //opt.UseXmlFile();
+                    // opt.CustomOperationIds(
+                    //     e =>
+                    //         $"{e.ActionDescriptor.RouteValues["controller"]?.ToLowerInvariant() ?? "unkown"}-{e.ActionDescriptor.RouteValues["action"]?.ToLowerInvariant() ?? "unkown"}-{e.HttpMethod?.ToLowerInvariant() ?? "unkown"}");
                 });
             return services;
         }
