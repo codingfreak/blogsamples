@@ -1,0 +1,10 @@
+﻿<Solution>
+  <Folder Name="/Logic/">
+    <Project Path="src\Logic\Logic.Interfaces\Logic.Interfaces.csproj" Type="Classic C#" />
+    <Project Path="src\Logic\Logic.Models\Logic.Models.csproj" Type="Classic C#" />
+    <Project Path="src\Logic\Logic.WeatherMock\Logic.WeatherMock.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Services/">
+    <Project Path="src//Services//Services.Swagger//Services.Swagger.csproj" Type="Classic C#" />
+  </Folder>
+</Solution>
