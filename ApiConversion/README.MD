@@ -4,7 +4,7 @@
 
 This represents the sources for the video series on .NET 9 updates regarding OpenAPI generation.
 
-![]()
+![Part 1](https://youtu.be/m4qAZifm42o)
 
 ## Using the sample
 
