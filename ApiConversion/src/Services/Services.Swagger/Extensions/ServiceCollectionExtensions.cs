@@ -90,7 +90,8 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
         /// </summary>
         /// <param name="basePath">The directory path in which to search for the files.</param>
         /// <param name="xmlCommentsFile">The name of the target file.</param>
-        private static void JoinXmlComments(string basePath, string xmlCommentsFile)
+        /// <returns>The full path of the resulting file.</returns>
+        private static string JoinXmlComments(string basePath, string xmlCommentsFile)
         {
             try
             {
@@ -116,7 +117,9 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                             m => !targetElement.Elements()
                                 .Any(e => XNode.DeepEquals(m, e))));
                 }
-                target.Save(xmlCommentsFile);
+                var resultFile = Path.Combine(basePath, "joined.xml");
+                target.Save(resultFile);
+                return resultFile;
             }
             catch (Exception ex)
             {
@@ -207,8 +210,8 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                 basePath,
                 assembly.GetName()
                     .Name + ".xml");
-            JoinXmlComments(basePath, assemblyFile);
-            genOptions.IncludeXmlComments(assemblyFile);
+            var file = JoinXmlComments(basePath, assemblyFile);
+            genOptions.IncludeXmlComments(file);
         }
 
         #endregion
