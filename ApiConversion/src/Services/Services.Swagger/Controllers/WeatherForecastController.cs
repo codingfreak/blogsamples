@@ -46,6 +46,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Controllers
         /// <response code="200">Valid weather data.</response>
         /// <response code="404">No weather data was found.</response>
         /// <response code="500">A server error occurred.</response>
+        [AllowAnonymous]
         [HttpGet("{location}")]
         public async ValueTask<ActionResult<WeatherForecast[]>> GetNextDaysAsync(string location)
         {

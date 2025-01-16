@@ -9,9 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 var swaggerOptions = builder.Configuration.GetSwaggerOptions();
 builder.Services.AddScoped<IWeatherService, MockWeatherService>();
 builder.Services.AddControllers();
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
+// doing OpenAPI and Swagger config injections
 builder.Services.AddApiVersioningInternal(swaggerOptions);
 builder.Services.AddSwaggerGenInternal(builder, swaggerOptions, builder.Configuration.GetIdentityOptions());
-builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration);
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();

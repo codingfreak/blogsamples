@@ -1,9 +1,7 @@
 namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
 {
     using System.Reflection;
-    using System.Xml;
     using System.Xml.Linq;
-    using System.Xml.XPath;
 
     using Asp.Versioning.ApiExplorer;
 
@@ -70,14 +68,60 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
             services.AddSwaggerGen(
                 opt =>
                 {
+                    opt.CustomOperationIds(e =>
+                    {
+                        var controller = e.ActionDescriptor.RouteValues["controller"]
+                            ?.ToLowerInvariant() ?? "unknown";
+                        var method = e.HttpMethod?.ToLowerInvariant() ?? "unknown";
+                        var action = e.ActionDescriptor.RouteValues["action"]
+                            ?.ToLowerInvariant().Replace(method, string.Empty) ?? "unknown";
+                        return $"{controller}-{action}-{method}";
+                    });
                     opt.UseVersioning(options, builder);
-                    opt.UseOauth(options, identityOptions);
                     opt.UseXmlFile();
-                    opt.CustomOperationIds(
-                        e =>
-                            $"{e.ActionDescriptor.RouteValues["controller"]?.ToLowerInvariant() ?? "unkown"}-{e.ActionDescriptor.RouteValues["action"]?.ToLowerInvariant() ?? "unkown"}-{e.HttpMethod?.ToLowerInvariant() ?? "unkown"}");
+                    opt.UseOauth(options, identityOptions);
                 });
             return services;
+        }
+
+        /// <summary>
+        /// Reads in all XML documentation files in the current folder and merges all <member />-tags
+        /// into the <paramref name="xmlCommentsFile" /> <members />-section.
+        /// </summary>
+        /// <param name="basePath">The directory path in which to search for the files.</param>
+        /// <param name="xmlCommentsFile">The name of the target file.</param>
+        private static void JoinXmlComments(string basePath, string xmlCommentsFile)
+        {
+            try
+            {
+                var allFiles = new DirectoryInfo(basePath).GetFiles("*.xml");
+                var target = XDocument.Load(xmlCommentsFile);
+                var targetElement = target.Elements("doc")
+                    .Elements("members")
+                    .Single();
+                foreach (var file in allFiles)
+                {
+                    if (file.Name == xmlCommentsFile)
+                    {
+                        // this is our target file
+                        continue;
+                    }
+                    var source = XDocument.Load(file.FullName);
+                    var allMembers = source.Elements("doc")
+                        .Elements("members")
+                        .Elements();
+                    // make sure to not write any duplicates
+                    targetElement.Add(
+                        allMembers.Where(
+                            m => !targetElement.Elements()
+                                .Any(e => XNode.DeepEquals(m, e))));
+                }
+                target.Save(xmlCommentsFile);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Could not join XML comments.", ex);
+            }
         }
 
         private static void UseOauth(
@@ -148,7 +192,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
         }
 
         /// <summary>
-        /// Is adding XML doc support to the <paramref name="genOptions"/> if possible.
+        /// Is adding XML doc support to the <paramref name="genOptions" /> if possible.
         /// </summary>
         /// <param name="genOptions">The Swagger generation options.</param>
         private static void UseXmlFile(this SwaggerGenOptions genOptions)
@@ -159,49 +203,12 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                 return;
             }
             var basePath = Path.GetDirectoryName(assembly.Location) ?? string.Empty;
-            var assemblyFile = Path.Combine(basePath, assembly.GetName().Name + ".xml");
-            //JoinXmlComments(basePath, assemblyFile);
+            var assemblyFile = Path.Combine(
+                basePath,
+                assembly.GetName()
+                    .Name + ".xml");
+            JoinXmlComments(basePath, assemblyFile);
             genOptions.IncludeXmlComments(assemblyFile);
-        }
-
-        /// <summary>
-        /// Reads in all XML documentation files in the current folder and merges all <member />-tags
-        /// into the <paramref name="xmlCommentsFile" /> <members />-section.
-        /// </summary>
-        /// <param name="basePath">The directory path in which to search for the files.</param>
-        /// <param name="xmlCommentsFile">The name of the target file.</param>
-        private static void JoinXmlComments(string basePath, string xmlCommentsFile)
-        {
-            try
-            {
-                var allFiles = new DirectoryInfo(basePath).GetFiles("*.xml");
-                var target = XDocument.Load(xmlCommentsFile);
-                var targetElement = target.Elements("doc")
-                    .Elements("members")
-                    .Single();
-                foreach (var file in allFiles)
-                {
-                    if (file.Name == xmlCommentsFile)
-                    {
-                        // this is our target file
-                        continue;
-                    }
-                    var source = XDocument.Load(file.FullName);
-                    var allMembers = source.Elements("doc")
-                        .Elements("members")
-                        .Elements();
-                    // make sure to not write any duplicates
-                    targetElement.Add(
-                        allMembers.Where(
-                            m => !targetElement.Elements()
-                                .Any(e => XNode.DeepEquals(m, e))));
-                }
-                target.Save(xmlCommentsFile);
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Could not join XML comments.", ex);
-            }
         }
 
         #endregion

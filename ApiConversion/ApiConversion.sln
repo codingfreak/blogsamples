@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Swagger", "src//Services//Services.Swagger//Services.Swagger.csproj", "{798D05A4-E9C6-4A2F-B749-13A39590B883}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services.Swagger", "src\Services\Services.Swagger\Services.Swagger.csproj", "{798D05A4-E9C6-4A2F-B749-13A39590B883}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{979B8373-E73F-4956-808A-046004F169F4}"
 EndProject
@@ -15,13 +15,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.Interfaces", "src\Log
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.WeatherMock", "src\Logic\Logic.WeatherMock\Logic.WeatherMock.csproj", "{6F1F9A0C-A905-45A1-8A51-847D12B14B59}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{C621C7DE-F00C-40B6-A7FA-537D5BAD0FDB}"
+	ProjectSection(SolutionItems) = preProject
+		README.MD = README.MD
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{798D05A4-E9C6-4A2F-B749-13A39590B883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -40,6 +42,9 @@ Global
 		{6F1F9A0C-A905-45A1-8A51-847D12B14B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F1F9A0C-A905-45A1-8A51-847D12B14B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F1F9A0C-A905-45A1-8A51-847D12B14B59}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{798D05A4-E9C6-4A2F-B749-13A39590B883} = {979B8373-E73F-4956-808A-046004F169F4}

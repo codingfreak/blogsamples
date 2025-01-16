@@ -23,7 +23,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                 opt =>
                 {
                     var identityOptions = app.Configuration.GetIdentityOptions();
-                    opt.DocumentTitle = "My API";
+                    opt.DocumentTitle = options.ApiName;
                     if (options.ApiVersions.Any())
                     {
                         var apiProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
@@ -43,7 +43,10 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                     opt.OAuthScopes(identityOptions.Scope.ToArray());
                     opt.OAuthScopeSeparator(" ");
                     opt.EnablePersistAuthorization();
-                    opt.OAuthUsePkce();
+                    if (identityOptions.UsePkce)
+                    {
+                        opt.OAuthUsePkce();
+                    }
                 });
         }
 
