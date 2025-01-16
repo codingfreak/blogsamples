@@ -6,12 +6,13 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
 
     using Logic.Models;
 
+    using Microsoft.Identity.Web;
     using Microsoft.OpenApi.Models;
 
     using Swashbuckle.AspNetCore.SwaggerGen;
 
     /// <summary>
-    /// Provides extension methods for <see cref="IServiceCollection"/>.
+    /// Provides extension methods for <see cref="IServiceCollection" />.
     /// </summary>
     internal static class ServiceCollectionExtensions
     {
@@ -23,26 +24,28 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
         /// <param name="services">The DI container.</param>
         /// <param name="options">The Swagger options.</param>
         /// <returns>The configured DI container.</returns>
-        public static IServiceCollection AddApiVersioningInternal(this IServiceCollection services, SwaggerOptions options)
+        public static IServiceCollection AddApiVersioningInternal(
+            this IServiceCollection services,
+            SwaggerOptions options)
         {
             services.AddApiVersioning(
                     config =>
                     {
                         // Specify the default API Version
-                        config.DefaultApiVersion = options.Versions!.Max()!;
+                        config.DefaultApiVersion = options.ApiVersions!.Max()!;
                         // If the client hasn't specified the API version in the request, use the default API version number
                         config.AssumeDefaultVersionWhenUnspecified = true;
                         config.ReportApiVersions = true;
                     })
                 .AddApiExplorer(
-                    versionOptions =>
+                    apiExplorerOptions =>
                     {
                         // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
                         // note: the specified format code will format the version as "'v'major[.minor][-status]"
-                        versionOptions.GroupNameFormat = "'v'VVV";
+                        apiExplorerOptions.GroupNameFormat = "'v'VVV";
                         // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
                         // can also be used to control the format of the API version in route templates
-                        versionOptions.SubstituteApiVersionInUrl = true;
+                        apiExplorerOptions.SubstituteApiVersionInUrl = true;
                     });
             return services;
         }
@@ -53,23 +56,31 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
         /// <param name="services">The DI container.</param>
         /// <param name="builder">The web-app-builder.</param>
         /// <param name="options">The Swagger options.</param>
+        /// <param name="identityOptions">The options for MS identity.</param>
         /// <returns>The configured DI container.</returns>
-        public static IServiceCollection AddSwaggerGenInternal(this IServiceCollection services, WebApplicationBuilder builder, SwaggerOptions options)
+        public static IServiceCollection AddSwaggerGenInternal(
+            this IServiceCollection services,
+            WebApplicationBuilder builder,
+            SwaggerOptions options,
+            MicrosoftIdentityOptions identityOptions)
         {
             services.AddSwaggerGen(
                 opt =>
                 {
                     opt.UseVersioning(options, builder);
-                    //opt.UseOauth(options);
-                    //opt.UseXmlFile();
-                    // opt.CustomOperationIds(
-                    //     e =>
-                    //         $"{e.ActionDescriptor.RouteValues["controller"]?.ToLowerInvariant() ?? "unkown"}-{e.ActionDescriptor.RouteValues["action"]?.ToLowerInvariant() ?? "unkown"}-{e.HttpMethod?.ToLowerInvariant() ?? "unkown"}");
+                    opt.UseOauth(options, identityOptions);
+                    opt.UseXmlFile();
+                    opt.CustomOperationIds(
+                        e =>
+                            $"{e.ActionDescriptor.RouteValues["controller"]?.ToLowerInvariant() ?? "unkown"}-{e.ActionDescriptor.RouteValues["action"]?.ToLowerInvariant() ?? "unkown"}-{e.HttpMethod?.ToLowerInvariant() ?? "unkown"}");
                 });
             return services;
         }
 
-        private static void UseOauth(this SwaggerGenOptions genOptions, SwaggerOptions options)
+        private static void UseOauth(
+            this SwaggerGenOptions genOptions,
+            SwaggerOptions options,
+            MicrosoftIdentityOptions identityOptions)
         {
             genOptions.AddSecurityDefinition(
                 nameof(SecuritySchemeType.OAuth2),
@@ -80,9 +91,11 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                     {
                         AuthorizationCode = new OpenApiOAuthFlow
                         {
-                            AuthorizationUrl = new Uri($"{options.AuthInstance}/{options.AuthTenant}/oauth2/v2.0/authorize"),
-                            TokenUrl = new Uri($"{options.AuthInstance}/{options.AuthTenant}/oauth2/v2.0/token"),
-                            Scopes = options.AuthScopes.ToDictionary(s => s, s => s)
+                            AuthorizationUrl = new Uri(
+                                $"{identityOptions.Instance}/{identityOptions.TenantId}/oauth2/v2.0/authorize"),
+                            TokenUrl = new Uri(
+                                $"{identityOptions.Instance}/{identityOptions.TenantId}/oauth2/v2.0/token"),
+                            Scopes = identityOptions.Scope.ToDictionary(s => s, s => s)
                         }
                     }
                 });
@@ -98,18 +111,22 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                                 Id = nameof(SecuritySchemeType.OAuth2)
                             }
                         },
-                        options.AuthScopes.ToArray()
+                        identityOptions.Scope.ToArray()
                     }
                 });
         }
 
-        private static void UseVersioning(this SwaggerGenOptions genOptions, SwaggerOptions options, WebApplicationBuilder builder)
+        private static void UseVersioning(
+            this SwaggerGenOptions genOptions,
+            SwaggerOptions options,
+            WebApplicationBuilder builder)
         {
             var provider = builder?.Services?.BuildServiceProvider()
                 .GetService<IApiVersionDescriptionProvider>();
             if (provider != null)
             {
-                foreach (var description in provider.ApiVersionDescriptions.OrderByDescending(v => v.ApiVersion.MajorVersion)
+                foreach (var description in provider.ApiVersionDescriptions
+                             .OrderByDescending(v => v.ApiVersion.MajorVersion)
                              .ThenByDescending(v => v.ApiVersion.MinorVersion))
                 {
                     var info = new OpenApiInfo
@@ -119,7 +136,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                         Description = options.Description,
                         Contact = new OpenApiContact
                         {
-                            Name = "codingfreaks"
+                            Name = options.Contact
                         }
                     };
                     genOptions.SwaggerDoc(description.GroupName, info);

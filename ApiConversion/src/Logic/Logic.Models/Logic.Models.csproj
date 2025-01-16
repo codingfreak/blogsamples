@@ -2,11 +2,11 @@
     <PropertyGroup>
         <RootNamespace>codingfreaks.ApiConversion.$(MSBuildProjectName)</RootNamespace>
         <AssemblyName>ApiConversion.$(MSBuildProjectName)</AssemblyName>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-      <PackageReference Include="Asp.Versioning.Abstractions" Version="8.1.0" />
+        <PackageReference Include="Asp.Versioning.Abstractions" Version="8.1.0" />
     </ItemGroup>
 </Project>

@@ -5,14 +5,14 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
     using Logic.Models;
 
     /// <summary>
-    /// Provides extensions for <see cref="WebApplication"/>.
+    /// Provides extensions for <see cref="WebApplication" />.
     /// </summary>
     internal static class WebApplicationExtensions
     {
         #region methods
 
         /// <summary>
-        /// Adds Swagger UI to the <paramref name="app"/>.
+        /// Adds Swagger UI to the <paramref name="app" />.
         /// </summary>
         /// <param name="app">The app before it runs.</param>
         /// <param name="options">The options for Swagger.</param>
@@ -22,24 +22,28 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
             app.UseSwaggerUI(
                 opt =>
                 {
+                    var identityOptions = app.Configuration.GetIdentityOptions();
                     opt.DocumentTitle = "My API";
-                    if (options.Versions.Any())
+                    if (options.ApiVersions.Any())
                     {
                         var apiProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
                         if (apiProvider != null)
                         {
-                            foreach (var description in apiProvider.ApiVersionDescriptions.OrderByDescending(a => a.ApiVersion))
+                            foreach (var description in apiProvider.ApiVersionDescriptions.OrderByDescending(
+                                         a => a.ApiVersion))
                             {
-                                opt.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                                opt.SwaggerEndpoint(
+                                    $"/swagger/{description.GroupName}/swagger.json",
+                                    description.GroupName.ToLowerInvariant());
                             }
                         }
                     }
                     // OAuth
-                    // opt.OAuthClientId(options.AuthClientId);
-                    // opt.OAuthScopes(options.AuthScopes.ToArray());
-                    // opt.OAuthScopeSeparator(" ");
-                    // opt.EnablePersistAuthorization();
-                    // opt.OAuthUsePkce();
+                    opt.OAuthClientId(identityOptions.ClientId);
+                    opt.OAuthScopes(identityOptions.Scope.ToArray());
+                    opt.OAuthScopeSeparator(" ");
+                    opt.EnablePersistAuthorization();
+                    opt.OAuthUsePkce();
                 });
         }
 

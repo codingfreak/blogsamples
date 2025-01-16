@@ -5,16 +5,17 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Controllers
     using Logic.Interfaces;
     using Logic.Models;
 
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     /// <summary>
     /// Provides endpoints for weather data.
     /// </summary>
+    [Authorize]
     [ApiController]
-    //[ApiVersion(1.0)]
-    //[ApiVersion(2.0)]
-    //[Route("api/v{version:apiVersion}/[controller]")]
-    [Route("[controller]")]
+    [ApiVersion(1.0)]
+    [ApiVersion(2.0)]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     public class WeatherForecastController : ControllerBase
     {
@@ -45,8 +46,8 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Controllers
         /// <response code="200">Valid weather data.</response>
         /// <response code="404">No weather data was found.</response>
         /// <response code="500">A server error occurred.</response>
-        [HttpGet]
-        public async ValueTask<ActionResult<WeatherForecast[]>> Get(string location)
+        [HttpGet("{location}")]
+        public async ValueTask<ActionResult<WeatherForecast[]>> GetNextDaysAsync(string location)
         {
             var result = await _weatherService.GetForecastsAsync(location);
             return Ok(result);
