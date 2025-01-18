@@ -18,7 +18,7 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
         /// </summary>
         /// <param name="app">The app before it runs.</param>
         /// <param name="configurationOptions">The configurationOptions for Swagger.</param>
-        /// <param name="identityOptions"></param>
+        /// <param name="identityOptions">The options for the MS identity config.</param>
         public static void UseSwaggerUiInternal(
             this WebApplication app,
             OpenApiConfigurationOptions configurationOptions,
