@@ -1,8 +1,10 @@
-namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
+namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
 {
     using Asp.Versioning.ApiExplorer;
 
     using Logic.Models;
+
+    using Microsoft.Identity.Web;
 
     /// <summary>
     /// Provides extensions for <see cref="WebApplication" />.
@@ -15,16 +17,17 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
         /// Adds Swagger UI to the <paramref name="app" />.
         /// </summary>
         /// <param name="app">The app before it runs.</param>
-        /// <param name="options">The options for Swagger.</param>
-        public static void UseSwaggerUiInternal(this WebApplication app, SwaggerConfigurationOptions options)
+        /// <param name="configurationOptions">The configurationOptions for Swagger.</param>
+        /// <param name="identityOptions"></param>
+        public static void UseSwaggerUiInternal(
+            this WebApplication app,
+            OpenApiConfigurationOptions configurationOptions,
+            MicrosoftIdentityOptions identityOptions)
         {
-            app.UseSwagger();
             app.UseSwaggerUI(
                 opt =>
                 {
-                    var identityOptions = app.Configuration.GetIdentityOptions();
-                    opt.DocumentTitle = options.ApiName;
-                    if (options.ApiVersions.Any())
+                    if (configurationOptions.ApiVersions.Any())
                     {
                         var apiProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
                         if (apiProvider != null)
@@ -33,18 +36,12 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
                                          a => a.ApiVersion))
                             {
                                 opt.SwaggerEndpoint(
-                                    $"/swagger/{description.GroupName}/swagger.json",
+                                    $"/openapi/{description.GroupName}.json",
                                     description.GroupName.ToLowerInvariant());
                             }
                         }
-                    }
-                    // OAuth
-                    opt.OAuthClientId(identityOptions.ClientId);
-                    opt.OAuthScopes(identityOptions.Scope.ToArray());
-                    opt.OAuthScopeSeparator(" ");
-                    opt.EnablePersistAuthorization();
-                    if (identityOptions.UsePkce)
-                    {
+                        opt.OAuthClientId(identityOptions.ClientId);
+                        opt.EnablePersistAuthorization();
                         opt.OAuthUsePkce();
                     }
                 });

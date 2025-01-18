@@ -5,7 +5,7 @@ namespace codingfreaks.ApiConversion.Logic.Models
     /// <summary>
     /// Is used to represent config options for Swagger.
     /// </summary>
-    public class SwaggerOptions
+    public class SwaggerConfigurationOptions
     {
         #region properties
 

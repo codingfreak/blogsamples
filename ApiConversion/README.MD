@@ -23,6 +23,11 @@ After cloning this to your local machine you need
 2) Execute the following commands in the directory where the sln file is resided:
 
     ```powershell
+    # OpenAPI API
+    dotnet user-secrets set AzureAd:TenantId GUID_OF_YOUR_ENTRA_TENANT --project src/Services/Services.OpenApi
+    dotnet user-secrets set AzureAd:Scope:0 APP_REGISTRATION_SCOPE --project src/Services/Services.OpenApi
+    dotnet user-secrets set AzureAd:ClientID CLIENT_ID --project src/Services/Services.OpenApi
+    # Swagger API
     dotnet user-secrets set AzureAd:TenantId GUID_OF_YOUR_ENTRA_TENANT --project src/Services/Services.Swagger
     dotnet user-secrets set AzureAd:Scope:0 APP_REGISTRATION_SCOPE --project src/Services/Services.Swagger
     dotnet user-secrets set AzureAd:ClientID CLIENT_ID --project src/Services/Services.Swagger

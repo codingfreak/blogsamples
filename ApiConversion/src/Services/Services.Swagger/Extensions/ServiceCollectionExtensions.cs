@@ -27,7 +27,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
         /// <returns>The configured DI container.</returns>
         public static IServiceCollection AddApiVersioningInternal(
             this IServiceCollection services,
-            SwaggerOptions options)
+            SwaggerConfigurationOptions options)
         {
             services.AddApiVersioning(
                     config =>
@@ -62,7 +62,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
         public static IServiceCollection AddSwaggerGenInternal(
             this IServiceCollection services,
             WebApplicationBuilder builder,
-            SwaggerOptions options,
+            SwaggerConfigurationOptions options,
             MicrosoftIdentityOptions identityOptions)
         {
             services.AddSwaggerGen(
@@ -129,7 +129,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
 
         private static void UseOauth(
             this SwaggerGenOptions genOptions,
-            SwaggerOptions options,
+            SwaggerConfigurationOptions options,
             MicrosoftIdentityOptions identityOptions)
         {
             genOptions.AddSecurityDefinition(
@@ -168,7 +168,7 @@ namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
 
         private static void UseVersioning(
             this SwaggerGenOptions genOptions,
-            SwaggerOptions options,
+            SwaggerConfigurationOptions options,
             WebApplicationBuilder builder)
         {
             var provider = builder?.Services?.BuildServiceProvider()

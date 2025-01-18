@@ -1,4 +1,4 @@
-﻿namespace codingfreaks.ApiConversion.Services.Swagger.Extensions
+﻿namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
 {
     using Logic.Models;
 
@@ -24,15 +24,15 @@
         }
 
         /// <summary>
-        /// Allows logic to access the Swagger options from the config if DI is not available yet.
+        /// Allows logic to access the OpenAPI options from the config if DI is not available yet.
         /// </summary>
         /// <param name="configuration">The configuration accessor.</param>
-        /// <returns>The configured Swagger options.</returns>
+        /// <returns>The configured OpenAPI options.</returns>
         /// <exception cref="ApplicationException">Is thrown if no options could be found or mapped.</exception>
-        public static SwaggerConfigurationOptions GetSwaggerOptions(this IConfiguration configuration)
+        public static OpenApiConfigurationOptions GetOpenApiOptions(this IConfiguration configuration)
         {
-            return configuration.GetSection("Swagger")
-                .Get<SwaggerConfigurationOptions>() ?? throw new ApplicationException("Could not map Swagger options.");
+            return configuration.GetSection("OpenApi")
+                .Get<OpenApiConfigurationOptions>() ?? throw new ApplicationException("Could not map OpenAPI options.");
         }
 
         #endregion
