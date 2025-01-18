@@ -17,6 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic.WeatherMock", "src\Lo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".solution", ".solution", "{C621C7DE-F00C-40B6-A7FA-537D5BAD0FDB}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
 		README.MD = README.MD
 	EndProjectSection
 EndProject
