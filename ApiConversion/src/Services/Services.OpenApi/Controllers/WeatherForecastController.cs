@@ -1,4 +1,4 @@
-namespace codingfreaks.ApiConversion.Services.OpenApi.Controllers
+﻿namespace codingfreaks.ApiConversion.Services.OpenApi.Controllers
 {
     using Asp.Versioning;
 
