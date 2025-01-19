@@ -6,6 +6,8 @@ This represents the sources for the video series on .NET 9 updates regarding Ope
 
 ![Part 1](https://youtu.be/m4qAZifm42o)
 
+![Part 2](https://youtu.be/216R-DKnvZw)
+
 ## Using the sample
 
 After cloning this to your local machine you need
