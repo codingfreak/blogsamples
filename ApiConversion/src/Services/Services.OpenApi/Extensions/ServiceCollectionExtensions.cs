@@ -1,8 +1,5 @@
 namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
 {
-    using System.Reflection;
-    using System.Xml;
-
     using Logic.Models;
 
     using Microsoft.AspNetCore.Authorization;
@@ -11,12 +8,16 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
     using Microsoft.Identity.Web;
     using Microsoft.OpenApi.Models;
 
+    using System.Reflection;
+    using System.Xml;
+
     /// <summary>
     /// Provides extension methods for <see cref="IServiceCollection" />.
     /// </summary>
     internal static class ServiceCollectionExtensions
     {
-        #region constants
+        #region methods
+
 
         /// <summary>
         /// Retrieves all controller-types from the entry-assembly.
@@ -74,25 +75,21 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
                 return result;
             });
 
-        #endregion
-
-        #region methods
-
         /// <summary>
         /// Adds API versionning to the DI.
         /// </summary>
         /// <param name="services">The DI container.</param>
-        /// <param name="configurationOptions">The Swagger configurationOptions.</param>
+        /// <param name="options">The Swagger options.</param>
         /// <returns>The configured DI container.</returns>
         public static IServiceCollection AddApiVersioningInternal(
             this IServiceCollection services,
-            OpenApiConfigurationOptions configurationOptions)
+            OpenApiConfigurationOptions options)
         {
             services.AddApiVersioning(
                     config =>
                     {
                         // Specify the default API Version
-                        config.DefaultApiVersion = configurationOptions.ApiVersions!.Max()!;
+                        config.DefaultApiVersion = options.ApiVersions!.Max()!;
                         // If the client hasn't specified the API version in the request, use the default API version number
                         config.AssumeDefaultVersionWhenUnspecified = true;
                         config.ReportApiVersions = true;
@@ -114,7 +111,7 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
         /// Adds and configures OpenAPI services to the DI.
         /// </summary>
         /// <param name="services">The DI container.</param>
-        /// <param name="configOptions"></param>
+        /// <param name="configOptions">The OpenAPI options from the config.</param>
         /// <param name="identityOptions">The options for the MS identity config.</param>
         /// <returns>The configured DI container.</returns>
         public static IServiceCollection AddOpenApiInternal(
@@ -124,26 +121,9 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
         {
             foreach (var apiVersion in configOptions.ApiVersions)
             {
-                services.AddOpenApi(
-                    $"v{apiVersion.MajorVersion}",
+                services.AddOpenApi($"v{apiVersion.MajorVersion}",
                     options =>
                     {
-                        // add security definition and reference to the document
-                        var scheme = new OpenApiSecurityScheme
-                        {
-                            Type = SecuritySchemeType.OAuth2,
-                            Flows = new OpenApiOAuthFlows
-                            {
-                                AuthorizationCode = new OpenApiOAuthFlow
-                                {
-                                    AuthorizationUrl = new Uri(
-                                        $"{identityOptions.Instance}/{identityOptions.TenantId}/oauth2/v2.0/authorize"),
-                                    TokenUrl = new Uri(
-                                        $"{identityOptions.Instance}/{identityOptions.TenantId}/oauth2/v2.0/token"),
-                                    Scopes = identityOptions.Scope.ToDictionary(s => s, s => s)
-                                }
-                            }
-                        };
                         var referenceScheme = new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
@@ -152,42 +132,47 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
                                 Type = ReferenceType.SecurityScheme
                             }
                         };
-                        // add document transformer
+                        var requirements = new List<OpenApiSecurityRequirement>
+                        {
+                            new()
+                            {
+                                [referenceScheme] = Array.Empty<string>()
+                            }
+                        };
                         options.AddDocumentTransformer(
                             (doc, ctx, _) =>
                             {
                                 doc.Components ??= new OpenApiComponents();
-                                doc.Components.SecuritySchemes.Add(nameof(SecuritySchemeType.OAuth2), scheme);
-                                var contact = new OpenApiContact
+                                // meta data
+                                doc.Info.Title = configOptions.ApiName;
+                                doc.Info.Description = configOptions.Description;
+                                doc.Info.Contact = new OpenApiContact
                                 {
                                     Name = configOptions.Contact
                                 };
-                                doc.Info.Contact = contact;
+                                // auth stuff
+                                var oauthScheme = new OpenApiSecurityScheme
+                                {
+                                    Type = SecuritySchemeType.OAuth2,
+                                    Flows = new OpenApiOAuthFlows
+                                    {
+                                        AuthorizationCode = new OpenApiOAuthFlow
+                                        {
+                                            AuthorizationUrl = new Uri(
+                                                $"{identityOptions.Instance}/{identityOptions.TenantId}/oauth2/v2.0/authorize"),
+                                            TokenUrl = new Uri(
+                                                $"{identityOptions.Instance}/{identityOptions.TenantId}/oauth2/v2.0/token"),
+                                            Scopes = identityOptions.Scope.ToDictionary(s => s, s => s)
+                                        }
+                                    }
+                                };
+                                doc.Components.SecuritySchemes.Add(nameof(SecuritySchemeType.OAuth2), oauthScheme);
                                 return Task.CompletedTask;
                             });
-                        // add operation transformer
                         options.AddOperationTransformer(
                             (op, ctx, _) =>
                             {
-                                // take care about authorization
-                                var hasAnonymous = ctx.Description.ActionDescriptor.EndpointMetadata
-                                    .OfType<IAllowAnonymous>()
-                                    .Any();
-                                var needsRequirementByAttribute = !hasAnonymous && ctx.Description.ActionDescriptor
-                                    .EndpointMetadata.OfType<IAuthorizeData>()
-                                    .Any();
-                                if (needsRequirementByAttribute)
-                                {
-                                    var requirements = new List<OpenApiSecurityRequirement>
-                                    {
-                                        new()
-                                        {
-                                            [referenceScheme] = Array.Empty<string>()
-                                        }
-                                    };
-                                    op.Security = requirements;
-                                }
-                                // Operation ID
+                                // operation id
                                 if (!ctx.Description.ActionDescriptor.EndpointMetadata.OfType<EndpointNameAttribute>()
                                         .Any())
                                 {
@@ -199,6 +184,17 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
                                         ?.ToLower() ?? "-";
                                     actionName = actionName.Replace(httpMethodName, string.Empty);
                                     op.OperationId = $"{controllerName}-{actionName}-{httpMethodName}";
+                                }
+                                // endpoint auth requirement
+                                var allowsAnonymous = ctx.Description.ActionDescriptor.EndpointMetadata
+                                    .OfType<IAllowAnonymous>()
+                                    .Any();
+                                var needsRequirement = !allowsAnonymous && ctx.Description.ActionDescriptor.EndpointMetadata
+                                    .OfType<IAuthorizeData>()
+                                    .Any();
+                                if (needsRequirement)
+                                {
+                                    op.Security = requirements;
                                 }
                                 // take care about XML documentation
                                 if (!ctx.Description.ActionDescriptor.EndpointMetadata

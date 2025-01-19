@@ -4,8 +4,6 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
 
     using Logic.Models;
 
-    using Microsoft.Identity.Web;
-
     /// <summary>
     /// Provides extensions for <see cref="WebApplication" />.
     /// </summary>
@@ -17,17 +15,14 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
         /// Adds Swagger UI to the <paramref name="app" />.
         /// </summary>
         /// <param name="app">The app before it runs.</param>
-        /// <param name="configurationOptions">The configurationOptions for Swagger.</param>
-        /// <param name="identityOptions">The options for the MS identity config.</param>
-        public static void UseSwaggerUiInternal(
-            this WebApplication app,
-            OpenApiConfigurationOptions configurationOptions,
-            MicrosoftIdentityOptions identityOptions)
+        /// <param name="options">The options for OpenAPI.</param>
+        public static void UseSwaggerUiInternal(this WebApplication app, OpenApiConfigurationOptions options)
         {
             app.UseSwaggerUI(
                 opt =>
                 {
-                    if (configurationOptions.ApiVersions.Any())
+                    var identityOptions = app.Configuration.GetIdentityOptions();
+                    if (options.ApiVersions.Any())
                     {
                         var apiProvider = app.Services.GetService<IApiVersionDescriptionProvider>();
                         if (apiProvider != null)
@@ -40,8 +35,12 @@ namespace codingfreaks.ApiConversion.Services.OpenApi.Extensions
                                     description.GroupName.ToLowerInvariant());
                             }
                         }
-                        opt.OAuthClientId(identityOptions.ClientId);
-                        opt.EnablePersistAuthorization();
+                    }
+                    // OAuth
+                    opt.OAuthClientId(identityOptions.ClientId);
+                    opt.EnablePersistAuthorization();
+                    if (identityOptions.UsePkce)
+                    {
                         opt.OAuthUsePkce();
                     }
                 });

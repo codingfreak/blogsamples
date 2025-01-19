@@ -7,7 +7,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
         <UserSecretsId>28e0e376-7f62-48f7-a582-ca71bbccac95</UserSecretsId>
-  </PropertyGroup>
+    </PropertyGroup>
     <ItemGroup>
       <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
       <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />

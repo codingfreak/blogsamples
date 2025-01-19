@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-        <UserSecretsId>77c9a543-22e5-4a03-8b4b-4a17d696b5e7</UserSecretsId>
+        <UserSecretsId>a9adb3fb-5deb-48d0-80b8-4b37bb5e50e9</UserSecretsId>
     </PropertyGroup>
     <PropertyGroup>
         <OpenApiGenerateDocuments>true</OpenApiGenerateDocuments>
@@ -14,9 +14,9 @@
         <OpenApiGenerateDocumentsOptions>--file-name sample</OpenApiGenerateDocumentsOptions>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
         <PackageReference Include="Microsoft.Extensions.ApiDescription.Server" Version="9.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -26,7 +26,6 @@
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\..\Logic\Logic.Interfaces\Logic.Interfaces.csproj" />
-      <ProjectReference Include="..\..\Logic\Logic.Models\Logic.Models.csproj" />
       <ProjectReference Include="..\..\Logic\Logic.WeatherMock\Logic.WeatherMock.csproj" />
     </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@ namespace codingfreaks.ApiConversion.Logic.Models
     using Asp.Versioning;
 
     /// <summary>
-    /// Is used to represent config options for OpenAPI.
+    /// Is used to represent config options for OpenApi.
     /// </summary>
     public class OpenApiConfigurationOptions
     {
