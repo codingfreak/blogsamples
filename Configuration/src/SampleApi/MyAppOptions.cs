@@ -2,7 +2,11 @@
 {
     public class MyAppOptions
     {
+        #region constants
+
         public static readonly string ConfigKey = "MyAppSettings";
+
+        #endregion
 
         #region properties
 
@@ -14,5 +18,4 @@
 
         #endregion
     }
-
 }

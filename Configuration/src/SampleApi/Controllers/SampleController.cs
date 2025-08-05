@@ -7,22 +7,35 @@
     [Route("api/[controller]")]
     public class SampleController : ControllerBase
     {
+        #region member vars
 
-        private IConfiguration _configuration;
+        private readonly MyAppOptions _appOptions;
 
-        private MyAppOptions _appOptions;
+        private readonly IConfiguration _configuration;
 
-        private IHostEnvironment _environment;
+        private readonly IHostEnvironment _environment;
 
         private Logic _myLogic;
 
-        public SampleController(IConfiguration configuration, IOptions<MyAppOptions> appOptions, Logic myLogic, IHostEnvironment environment)
+        #endregion
+
+        #region constructors and destructors
+
+        public SampleController(
+            IConfiguration configuration,
+            IOptions<MyAppOptions> appOptions,
+            Logic myLogic,
+            IHostEnvironment environment)
         {
             _configuration = configuration;
             _myLogic = myLogic;
             _environment = environment;
             _appOptions = appOptions.Value;
         }
+
+        #endregion
+
+        #region methods
 
         [HttpGet]
         public IActionResult Get()
@@ -36,5 +49,7 @@
             };
             return Ok(result);
         }
+
+        #endregion
     }
 }

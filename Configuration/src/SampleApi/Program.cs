@@ -1,10 +1,10 @@
-﻿
-namespace SampleApi
+﻿namespace SampleApi
 {
     using Scalar.AspNetCore;
 
     public class Program
     {
+        #region methods
 
         public static void Main(string[] args)
         {
@@ -25,5 +25,7 @@ namespace SampleApi
             app.MapControllers();
             app.Run();
         }
+
+        #endregion
     }
 }
