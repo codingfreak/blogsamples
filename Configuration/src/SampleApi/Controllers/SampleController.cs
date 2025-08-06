@@ -1,7 +1,11 @@
 ﻿namespace SampleApi.Controllers
 {
+    using Logic;
+
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Options;
+
+    using Models;
 
     [ApiController]
     [Route("api/[controller]")]
@@ -15,7 +19,7 @@
 
         private readonly IHostEnvironment _environment;
 
-        private Logic _myLogic;
+        private SampleLogic _mySampleLogic;
 
         #endregion
 
@@ -24,11 +28,11 @@
         public SampleController(
             IConfiguration configuration,
             IOptions<MyAppOptions> appOptions,
-            Logic myLogic,
+            SampleLogic mySampleLogic,
             IHostEnvironment environment)
         {
             _configuration = configuration;
-            _myLogic = myLogic;
+            _mySampleLogic = mySampleLogic;
             _environment = environment;
             _appOptions = appOptions.Value;
         }

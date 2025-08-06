@@ -1,8 +1,10 @@
-﻿namespace SampleApi
+﻿namespace SampleApi.Logic
 {
     using Microsoft.Extensions.Options;
 
-    public class Logic
+    using Models;
+
+    public class SampleLogic
     {
         #region member vars
 
@@ -12,7 +14,7 @@
 
         #region constructors and destructors
 
-        public Logic(IOptionsSnapshot<MyAppOptions> appOptions)
+        public SampleLogic(IOptionsSnapshot<MyAppOptions> appOptions)
         {
             _appOptions = appOptions.Value;
         }

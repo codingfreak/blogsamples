@@ -1,5 +1,7 @@
 ﻿namespace SampleApi
 {
+    using SampleApi.Models;
+
     using Scalar.AspNetCore;
 
     public class Program

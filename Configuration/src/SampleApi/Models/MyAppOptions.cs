@@ -1,4 +1,4 @@
-﻿namespace SampleApi
+﻿namespace SampleApi.Models
 {
     public class MyAppOptions
     {
