@@ -22,3 +22,7 @@ Execute `Connect-AzAccount -Tenant [YOUR-TENANT-ID] -Subscription [SUBSCRIPTION_
 Execute `./deploy.ps1`.
 
 or `./deploy.ps1 -WhatIf` if you want to simulate the changes in Azure beforehand.
+
+## Clearing resources
+
+- Use `Remove-AzResourceGroup -Name rg-codingfreaks-test` to remove all resources.

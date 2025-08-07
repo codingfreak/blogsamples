@@ -27,7 +27,7 @@
 
         public SampleController(
             IConfiguration configuration,
-            IOptions<MyAppOptions> appOptions,
+            IOptionsSnapshot<MyAppOptions> appOptions,
             SampleLogic mySampleLogic,
             IHostEnvironment environment)
         {

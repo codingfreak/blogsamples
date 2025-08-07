@@ -10,6 +10,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2024-11-01' = {
     }
     tenantId: tenant().tenantId
     enableRbacAuthorization: true
+    enablePurgeProtection: false
   }
 }
 
@@ -18,6 +19,9 @@ resource appConfig 'Microsoft.AppConfiguration/configurationStores@2024-06-01' =
   location: resourceGroup().location
   sku: {
     name: 'Standard'
+  }
+  properties: {
+    enablePurgeProtection: false
   }
 }
 

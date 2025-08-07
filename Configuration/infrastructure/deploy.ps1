@@ -11,4 +11,9 @@ if ($null -eq $ctx) {
 }
 $dateSuffix = Get-Date -Format "yyyy-dd-MM-HH-mm"
 $deployName = "codingfreaks-sample-$dateSuffix"
-New-AzDeployment -Name $deployName -Location $Location -TemplateFile ./main.bicep -TemplateParameterFile ./params.bicepparam -WhatIf:$WhatIf -WhatIfResultFormat ResourceIdOnly
+New-AzDeployment -Name $deployName `
+    -Location $Location `
+    -TemplateFile ./main.bicep `
+    -TemplateParameterFile ./params.bicepparam `
+    -WhatIf:$WhatIf `
+    -WhatIfResultFormat ResourceIdOnly
