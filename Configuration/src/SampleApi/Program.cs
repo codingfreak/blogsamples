@@ -1,5 +1,7 @@
 ﻿namespace SampleApi
 {
+    using Logic;
+
     using SampleApi.Models;
 
     using Scalar.AspNetCore;
@@ -13,7 +15,7 @@
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
-            builder.Services.AddTransient<Logic>();
+            builder.Services.AddTransient<SampleLogic>();
             builder.Services.AddOptions<MyAppOptions>()
                 .Bind(builder.Configuration.GetSection(MyAppOptions.ConfigKey));
             var app = builder.Build();
