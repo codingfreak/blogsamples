@@ -1,7 +1,9 @@
 targetScope = 'resourceGroup'
 
+var salt = substring(tenant().tenantId, 0, 10)
+
 resource keyVault 'Microsoft.KeyVault/vaults@2024-11-01' = {
-  name: 'kv-cf-sample'
+  name: 'kv-cf-sample-${salt}'
   location: resourceGroup().location
   properties: {
     sku: {
@@ -15,7 +17,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2024-11-01' = {
 }
 
 resource appConfig 'Microsoft.AppConfiguration/configurationStores@2024-06-01' = {
-  name: 'appcs-cf-sample'
+  name: 'appcs-cf-sample-${salt}'
   location: resourceGroup().location
   sku: {
     name: 'Standard'
@@ -26,7 +28,7 @@ resource appConfig 'Microsoft.AppConfiguration/configurationStores@2024-06-01' =
 }
 
 resource servicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
-  name: 'asp-cf-sample'
+  name: 'asp-cf-sample-${salt}'
   location: resourceGroup().location
   kind: 'windows'
   sku: {
@@ -37,7 +39,7 @@ resource servicePlan 'Microsoft.Web/serverfarms@2024-11-01' = {
 }
 
 resource webApp 'Microsoft.Web/sites@2024-11-01' = {
-  name: 'api-cf-sample'
+  name: 'api-cf-sample-${salt}'
   location: resourceGroup().location
   kind: 'app'
   identity: {
@@ -62,6 +64,9 @@ resource webApp 'Microsoft.Web/sites@2024-11-01' = {
     }
   }
 }
+
+
+output appName string = webApp.name
 
 output keyVaultUri string = keyVault.properties.vaultUri
 

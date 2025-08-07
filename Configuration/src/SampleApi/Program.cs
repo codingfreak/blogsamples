@@ -21,7 +21,7 @@
             {
                 // we probably run in Azure
                 //UseKeyVault(builder);
-                UseAzureAppConfig(builder);
+                //UseAzureAppConfig(builder);
             }
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
