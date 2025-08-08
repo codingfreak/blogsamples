@@ -13,8 +13,8 @@ This represents the sources for the video series about basics and details of the
 </div>
 
 <div align="left">
-      <a href="https://youtu.be/Srz1IBNYODU">
-         <img src="https://i.ytimg.com/vi/Srz1IBNYODU/0.jpg" style="width:50%;">
+      <a href="https://youtu.be/Bk2N7TTk4Ig">
+         <img src="https://i.ytimg.com/vi/Bk2N7TTk4Ig/0.jpg" style="width:50%;">
       </a>
 </div>
 
