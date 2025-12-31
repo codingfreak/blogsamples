@@ -1,6 +1,6 @@
 # Azure DevOps Federated Service-Connections Deep Dive
 
-![YT](https://youtu.be/m4qAZifm42o)
+![YT](https://youtu.be/7BDoQSNX6go)
 
 This folder contains the PowerShell script which will perform the creation of a new federated
 service connection in Azure DevOps using a given service principal.
