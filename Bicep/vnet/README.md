@@ -1,5 +1,7 @@
 # Bicep VNET
 
+![YT](https://youtu.be/VnFkay7gtzo)
+
 ## Summary
 
 It's been a while since my latest Bicep tutorial. This time I want to show how to create a VNET with some resources in 2026.
