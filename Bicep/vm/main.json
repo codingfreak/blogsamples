@@ -1,0 +1,448 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "languageVersion": "2.0",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.39.26.7824",
+      "templateHash": "11570776836699462260"
+    }
+  },
+  "functions": [
+    {
+      "namespace": "__bicep",
+      "members": {
+        "resolveSubnetByName": {
+          "parameters": [
+            {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "name": "subnets"
+            },
+            {
+              "type": "string",
+              "name": "subnetName"
+            }
+          ],
+          "output": {
+            "type": "object",
+            "value": "[filter(map(parameters('subnets'), lambda('s', 'i', createObject('index', lambdaVariables('i'), 'subnet', lambdaVariables('s')))), lambda('n', 'i', equals(lambdaVariables('n').subnet.name, parameters('subnetName'))))[0].subnet]"
+          },
+          "metadata": {
+            "description": "Resolves a subnet by searching for its name in a list of submets.",
+            "__bicep_imported_from!": {
+              "sourceTemplate": "resolveSubnetByName.bicep"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "parameters": {
+    "projectName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the project."
+      }
+    },
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The Azure region where to deploy to."
+      }
+    },
+    "stage": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the stage."
+      }
+    },
+    "addressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "The address prefix for the VNET."
+      }
+    },
+    "subnets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "metadata": {
+        "description": "The names for all subnets which should take in resources. The GatewaySubnet will be deployed additionally!"
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "The user name of the VM admin."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password of the VM admin."
+      }
+    }
+  },
+  "resources": {
+    "vnetGroup": {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2025-04-01",
+      "name": "[format('rg-{0}-vnet-{1}', toLower(parameters('projectName')), toLower(parameters('stage')))]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "purpose": "demo",
+        "project": "[parameters('projectName')]"
+      }
+    },
+    "vmGroup": {
+      "type": "Microsoft.Resources/resourceGroups",
+      "apiVersion": "2025-04-01",
+      "name": "[format('rg-{0}-vm-{1}', toLower(parameters('projectName')), toLower(parameters('stage')))]",
+      "location": "[parameters('location')]",
+      "tags": {
+        "purpose": "demo",
+        "project": "[parameters('projectName')]"
+      }
+    },
+    "vnet": {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "resources-vnet",
+      "resourceGroup": "[format('rg-{0}-vnet-{1}', toLower(parameters('projectName')), toLower(parameters('stage')))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "projectName": {
+            "value": "[parameters('projectName')]"
+          },
+          "stage": {
+            "value": "[parameters('stage')]"
+          },
+          "addressPrefix": {
+            "value": "[parameters('addressPrefix')]"
+          },
+          "subnets": {
+            "value": "[parameters('subnets')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "languageVersion": "2.0",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.39.26.7824",
+              "templateHash": "13344532036658422384"
+            }
+          },
+          "functions": [
+            {
+              "namespace": "__bicep",
+              "members": {
+                "resolveSubnetByName": {
+                  "parameters": [
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      },
+                      "name": "subnets"
+                    },
+                    {
+                      "type": "string",
+                      "name": "subnetName"
+                    }
+                  ],
+                  "output": {
+                    "type": "object",
+                    "value": "[filter(map(parameters('subnets'), lambda('s', 'i', createObject('index', lambdaVariables('i'), 'subnet', lambdaVariables('s')))), lambda('n', 'i', equals(lambdaVariables('n').subnet.name, parameters('subnetName'))))[0].subnet]"
+                  },
+                  "metadata": {
+                    "description": "Resolves a subnet by searching for its name in a list of submets.",
+                    "__bicep_imported_from!": {
+                      "sourceTemplate": "resolveSubnetByName.bicep"
+                    }
+                  }
+                }
+              }
+            }
+          ],
+          "parameters": {
+            "projectName": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the project."
+              }
+            },
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "The Azure region where to deploy to."
+              }
+            },
+            "stage": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the stage."
+              }
+            },
+            "addressPrefix": {
+              "type": "string",
+              "metadata": {
+                "description": "The address prefix for the VNET."
+              }
+            },
+            "subnets": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "metadata": {
+                "description": "The names for all subnets which should take in resources. The GatewaySubnet will be deployed additionally!"
+              }
+            }
+          },
+          "variables": {
+            "suffix": "[format('{0}-{1}', toLower(parameters('projectName')), toLower(parameters('stage')))]",
+            "workloadSubnets": "[map(parameters('subnets'), lambda('s', 'i', createObject('name', lambdaVariables('s'), 'properties', createObject('addressPrefix', cidrSubnet(parameters('addressPrefix'), 24, add(lambdaVariables('i'), 1)), 'networkSecurityGroup', createObject('id', resourceId('Microsoft.Network/networkSecurityGroups', format('nsg-{0}', variables('suffix'))))))))]",
+            "resolvedSubnets": "[union(createArray(createObject('name', 'GatewaySubnet', 'properties', createObject('addressPrefix', cidrSubnet(parameters('addressPrefix'), 29, 0)))), variables('workloadSubnets'))]"
+          },
+          "resources": {
+            "vnet": {
+              "type": "Microsoft.Network/virtualNetworks",
+              "apiVersion": "2025-01-01",
+              "name": "[format('vnet-{0}', variables('suffix'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "addressSpace": {
+                  "addressPrefixes": [
+                    "[parameters('addressPrefix')]"
+                  ]
+                },
+                "subnets": "[variables('resolvedSubnets')]"
+              },
+              "dependsOn": [
+                "nsg"
+              ]
+            },
+            "nsg": {
+              "type": "Microsoft.Network/networkSecurityGroups",
+              "apiVersion": "2025-01-01",
+              "name": "[format('nsg-{0}', variables('suffix'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "securityRules": [
+                  {
+                    "name": "allow-rdp",
+                    "properties": {
+                      "access": "Allow",
+                      "direction": "Inbound",
+                      "priority": 100,
+                      "protocol": "Tcp",
+                      "destinationPortRange": "3389",
+                      "sourcePortRange": "*",
+                      "sourceAddressPrefix": "*",
+                      "destinationAddressPrefix": "*"
+                    }
+                  }
+                ]
+              }
+            },
+            "nic": {
+              "type": "Microsoft.Network/networkInterfaces",
+              "apiVersion": "2025-01-01",
+              "name": "[format('nic-{0}', variables('suffix'))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "enableAcceleratedNetworking": true,
+                "ipConfigurations": [
+                  {
+                    "name": "default",
+                    "properties": {
+                      "subnet": {
+                        "id": "[__bicep.resolveSubnetByName(reference('vnet').subnets, 'VmSubnet').id]"
+                      }
+                    }
+                  }
+                ],
+                "networkSecurityGroup": {
+                  "id": "[resourceId('Microsoft.Network/networkSecurityGroups', format('nsg-{0}', variables('suffix')))]"
+                }
+              },
+              "dependsOn": [
+                "nsg",
+                "vnet"
+              ]
+            }
+          },
+          "outputs": {
+            "subnets": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              },
+              "value": "[reference('vnet').subnets]"
+            },
+            "nicId": {
+              "type": "string",
+              "value": "[resourceId('Microsoft.Network/networkInterfaces', format('nic-{0}', variables('suffix')))]"
+            }
+          }
+        }
+      },
+      "dependsOn": [
+        "vnetGroup"
+      ]
+    },
+    "vm": {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2025-04-01",
+      "name": "resources-vm",
+      "resourceGroup": "[format('rg-{0}-vnet-{1}', toLower(parameters('projectName')), toLower(parameters('stage')))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "location": {
+            "value": "[parameters('location')]"
+          },
+          "projectName": {
+            "value": "[parameters('projectName')]"
+          },
+          "stage": {
+            "value": "[parameters('stage')]"
+          },
+          "nicId": {
+            "value": "[reference('vnet').outputs.nicId.value]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.39.26.7824",
+              "templateHash": "211362243734728850"
+            }
+          },
+          "parameters": {
+            "projectName": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the project."
+              }
+            },
+            "location": {
+              "type": "string",
+              "metadata": {
+                "description": "The Azure region where to deploy to."
+              }
+            },
+            "stage": {
+              "type": "string",
+              "metadata": {
+                "description": "The name of the stage."
+              }
+            },
+            "nicId": {
+              "type": "string",
+              "metadata": {
+                "description": "The resource id of the network interface card."
+              }
+            },
+            "adminUsername": {
+              "type": "string",
+              "metadata": {
+                "description": "The user name of the VM admin."
+              }
+            },
+            "adminPassword": {
+              "type": "securestring",
+              "metadata": {
+                "description": "The password of the VM admin."
+              }
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Compute/virtualMachines",
+              "apiVersion": "2025-04-01",
+              "name": "[format('vm-{0}-one-{1}', toLower(parameters('projectName')), toLower(parameters('stage')))]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "hardwareProfile": {
+                  "vmSize": "Standard_A4_v2"
+                },
+                "storageProfile": {
+                  "imageReference": {
+                    "publisher": "MicrosoftWindowsDesktop",
+                    "offer": "windows-11",
+                    "sku": "win11-25h2-pro"
+                  },
+                  "osDisk": {
+                    "osType": "Windows",
+                    "createOption": "FromImage",
+                    "caching": "ReadWrite",
+                    "name": "[format('disc-os-{0}-one-{1}', toLower(parameters('projectName')), toLower(parameters('stage')))]"
+                  }
+                },
+                "osProfile": {
+                  "windowsConfiguration": {
+                    "provisionVMAgent": true,
+                    "enableAutomaticUpdates": false,
+                    "timeZone": "W. Europe Standard Time"
+                  },
+                  "adminUsername": "[parameters('adminUsername')]",
+                  "adminPassword": "[parameters('adminPassword')]",
+                  "computerName": "cfone"
+                },
+                "networkProfile": {
+                  "networkInterfaces": [
+                    {
+                      "id": "[parameters('nicId')]"
+                    }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "dependsOn": [
+        "vnet",
+        "vnetGroup"
+      ]
+    }
+  },
+  "outputs": {
+    "vmSubnetId": {
+      "type": "string",
+      "value": "[__bicep.resolveSubnetByName(reference('vnet').outputs.subnets.value, 'VmSubnet').id]"
+    },
+    "jumpSubnetId": {
+      "type": "string",
+      "value": "[__bicep.resolveSubnetByName(reference('vnet').outputs.subnets.value, 'JumphostSubnet').id]"
+    }
+  }
+}
