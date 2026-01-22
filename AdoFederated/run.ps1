@@ -160,6 +160,8 @@ $scResult = Invoke-AzureDevOpsRestApi -OrganizationName $orgName `
     -Body $json
 $issuer = $scResult.authorization.parameters.workloadIdentityFederationIssuer
 $subject = $scResult.authorization.parameters.workloadIdentityFederationSubject
+Write-Host "Awaiting grace period (3s)."
+Start-Sleep -Seconds 3
 # create federation on existing service principal
 New-AzADAppFederatedCredential -ApplicationObjectId $servicePrincipalObjectId `
     -Audience 'api://AzureADTokenExchange' `
