@@ -43,7 +43,7 @@ var jumpHostPrefix string = resolveSubnetPrefixByName(vnet.properties.subnets, '
 var vmSubnet object = resolveSubnetByName(vnet.properties.subnets, 'VmSubnet')
 var vmPrefix string = resolveSubnetPrefixByName(vnet.properties.subnets, 'VmSubnet')
 
-resource vnet 'Microsoft.Network/virtualNetworks@2025-01-01' = {
+resource vnet 'Microsoft.Network/virtualNetworks@2025-05-01' = {
   name: 'vnet-${suffix}'
   location: location
   properties: {
@@ -56,7 +56,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2025-01-01' = {
   }
 }
 
-resource nsg 'Microsoft.Network/networkSecurityGroups@2025-01-01' = {
+resource nsg 'Microsoft.Network/networkSecurityGroups@2025-05-01' = {
   name: 'nsg-${suffix}'
   location: location
   properties: {
@@ -83,15 +83,15 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2025-01-01' = {
           protocol: 'Icmp'
           destinationPortRange: '*'
           sourcePortRange: '*'
-          sourceAddressPrefix: '*'
-          destinationAddressPrefix: '*'
+          sourceAddressPrefix: jumpHostPrefix
+          destinationAddressPrefix: vmPrefix
         }
       }
     ]
   }
 }
 
-resource pipVm 'Microsoft.Network/publicIPAddresses@2025-01-01' = {
+resource pipVm 'Microsoft.Network/publicIPAddresses@2025-05-01' = {
   name: 'pip-${toLower(projectName)}-one-${toLower(stage)}'
   location: location
   sku: {
@@ -103,7 +103,7 @@ resource pipVm 'Microsoft.Network/publicIPAddresses@2025-01-01' = {
   }
 }
 
-resource pipJump 'Microsoft.Network/publicIPAddresses@2025-01-01' = {
+resource pipJump 'Microsoft.Network/publicIPAddresses@2025-05-01' = {
   name: 'pip-${toLower(projectName)}-jump-${toLower(stage)}'
   location: location
   sku: {
@@ -115,7 +115,7 @@ resource pipJump 'Microsoft.Network/publicIPAddresses@2025-01-01' = {
   }
 }
 
-resource nicVm 'Microsoft.Network/networkInterfaces@2025-01-01' = {
+resource nicVm 'Microsoft.Network/networkInterfaces@2025-05-01' = {
   name: 'nic-${suffix}'
   location: location
   properties: {
@@ -139,7 +139,7 @@ resource nicVm 'Microsoft.Network/networkInterfaces@2025-01-01' = {
   }
 }
 
-resource nicJump 'Microsoft.Network/networkInterfaces@2025-01-01' = {
+resource nicJump 'Microsoft.Network/networkInterfaces@2025-05-01' = {
   name: 'nic-jump-${suffix}'
   location: location
   properties: {

@@ -8,7 +8,7 @@ param stage = 'demo'
 
 param addressPrefix = '10.0.0.0/16'
 
-param subnets = ['VmSubnet', 'JumphostSubnet']
+param subnets = ['VmSubnet', 'TestSubnet', 'JumphostSubnet']
 
 param adminUsername = 'codingfreaks'
 
