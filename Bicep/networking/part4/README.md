@@ -1,5 +1,11 @@
 # Bicep VM
 
+<div align="left">
+      <a href="https://www.youtube.com/watch?v=999uwU0YbKY">
+         <img src="https://img.youtube.com/vi/999uwU0YbKY/0.jpg" style="width:50%;">
+      </a>
+</div>
+
 ## Summary
 
 In this video I want to show a current flaw in Bicep where a parameter which is resolved by a user-defined-function
