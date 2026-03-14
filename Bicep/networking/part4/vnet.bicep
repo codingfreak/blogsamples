@@ -83,8 +83,8 @@ resource nsg 'Microsoft.Network/networkSecurityGroups@2025-01-01' = {
           protocol: 'Icmp'
           destinationPortRange: '*'
           sourcePortRange: '*'
-          sourceAddressPrefix: jumpHostPrefix
-          destinationAddressPrefix: vmPrefix
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: '*'
         }
       }
     ]

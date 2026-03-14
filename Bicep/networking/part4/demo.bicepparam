@@ -13,7 +13,7 @@ param subnets = ['VmSubnet', 'JumphostSubnet']
 param adminUsername = 'codingfreaks'
 
 param adminPassword = az.getSecret(
-  'c764670f-e928-42c2-86c1-e984e524018a',
+  'c1907265-583f-42c3-a236-9ecf192794e7',
   'rg-management',
   'akv-dd-test-mgmt',
   'codingfreaks-vm-admin-password'
