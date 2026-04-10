@@ -1,3 +1,5 @@
+**THE PROBLEM STATED HERE WAS FIXED IN PART 5**
+
 # Bicep VM
 
 <div align="left">
