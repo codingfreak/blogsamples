@@ -1,0 +1,16 @@
+﻿{
+    "$schema": "https://json.schemastore.org/launchsettings.json",
+    "profiles": {
+        "https": {
+            "commandName": "Project",
+            "dotnetRunMessages": true,
+            "launchBrowser": false,
+            "applicationUrl": "https://localhost:7028",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "APPLICATIONINSIGHTS_CONNECTION_STRING": "InstrumentationKey=98074d8a-276c-4cdc-9a4b-24540b763a86;IngestionEndpoint=https://westeurope-5.in.applicationinsights.azure.com/;LiveEndpoint=https://westeurope.livediagnostics.monitor.azure.com/;ApplicationId=6b63afe9-6105-4149-83fd-8c3198962d70",
+                "APPLICATIONINSIGHTS_AUTHENTICATION_STRING": "Authorization=AAD"
+            }
+        }
+    }
+}
