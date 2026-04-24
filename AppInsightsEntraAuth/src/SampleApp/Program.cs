@@ -4,19 +4,23 @@ using Azure.Monitor.OpenTelemetry.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
-builder.Services.AddOpenTelemetry()
-    .UseAzureMonitor(options =>
+var otel = builder.Services.AddOpenTelemetry();
+if (!builder.Environment.IsDevelopment())
+{
+    // we are running in Azure!
+    otel.UseAzureMonitor(options =>
     {
-        if (builder.Environment.IsProduction())
-        {
-            options.Credential = new ManagedIdentityCredential(new ManagedIdentityCredentialOptions());
-        }
-        else
-        {
-            // DON'T DO THIS BECAUSE IT ONLY WORKS IN VS!!!
-            //options.Credential = new DefaultAzureCredential();
-        }
+        options.Credential = new ManagedIdentityCredential(new ManagedIdentityCredentialOptions());
     });
+}
+else
+{
+    // TODO USe Aspire dashboard as OTEL endpoint
+    // otel.UseAzureMonitor(options =>
+    // {
+    //     options.Credential = new ManagedIdentityCredential(new ManagedIdentityCredentialOptions());
+    // });
+}
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

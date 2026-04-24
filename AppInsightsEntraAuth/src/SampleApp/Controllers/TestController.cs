@@ -33,7 +33,6 @@ namespace codingfreaks.samples.AppInsightsEntraAuth.Controllers
                         Environment.GetEnvironmentVariable("APPLICATIONINSIGHTS_AUTHENTICATION_STRING") ?? "-"
                 }
             };
-
             return Ok(result);
         }
 
