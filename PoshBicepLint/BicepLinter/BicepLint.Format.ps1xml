@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <ViewDefinitions>
+    <View>
+      <Name>LinterResult</Name>
+      <ViewSelectedBy>
+        <TypeName>codingfreaks.PoshBicepLint.LinterResult</TypeName>
+      </ViewSelectedBy>
+      <TableControl>
+        <TableHeaders>
+          <TableColumnHeader>
+            <Label>Filename</Label>
+          </TableColumnHeader>
+          <TableColumnHeader>
+            <Label>Succeeded</Label>
+          </TableColumnHeader>
+        </TableHeaders>
+        <TableRowEntries>
+          <TableRowEntry>
+            <TableColumnItems>
+              <TableColumnItem>
+                <PropertyName>Filename</PropertyName>
+              </TableColumnItem>
+              <TableColumnItem>
+                  <ScriptBlock>$_.Succeeded</ScriptBlock>
+              </TableColumnItem>
+            </TableColumnItems>
+          </TableRowEntry>
+        </TableRowEntries>
+      </TableControl>
+    </View>
+  </ViewDefinitions>
+</Configuration>

@@ -3,7 +3,7 @@
         "PowerShell": {
             "commandName": "Executable",
             "executablePath": "C:\\Program Files\\PowerShell\\7\\pwsh.exe",
-            "commandLineArgs": "-NoExit -Command \"Import-Module '$(TargetDir)PoshBicepLint.dll';Start-BicepLint -Message 'World'\"",
+            "commandLineArgs": "-NoExit -Command \"Import-Module '$(TargetDir)PoshBicepLint.dll';Start-BicepLint -Path '$(ProjectDir)TestData'\"",
             "workingDirectory": "$(ProjectDir)"
         }
     }
