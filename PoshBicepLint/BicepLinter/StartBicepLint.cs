@@ -1,7 +1,10 @@
 ﻿namespace codingfreaks.PoshBicepLint
 {
-    using System.Diagnostics;
     using System.Management.Automation;
+
+    using Helpers;
+
+    using Models;
 
     [Cmdlet(VerbsLifecycle.Start, "BicepLint")]
     [OutputType(typeof(LinterResult[]))]
@@ -12,19 +15,16 @@
         /// <inheritdoc />
         protected override void ProcessRecord()
         {
-            var watch = new Stopwatch();
-            watch.Start();
             var worker = new BicepLinter(WriteProgress);
-            var loopTask = Task.Run(() => worker.RunMainThreadLoop(CancellationToken.None));
-            var resultsTask = Task.Run(() => worker.Start(Path));
-            Task.WhenAll(resultsTask, loopTask)
-                .GetAwaiter()
-                .GetResult();
-            var results = resultsTask.GetAwaiter()
-                .GetResult();
-            watch.Stop();
+            var results = worker.Start(Path);
+            if (results == null)
+            {
+                // the process was cancelled probably
+                base.ProcessRecord();
+                return;
+            }
+            // we went through normally
             WriteObject(results);
-            //WriteInformation(new InformationRecord($"Handled {results.Length} files in {watch.Elapsed}.", ""));
             if (!DontFailOnError.IsPresent && results.Any(r => !r.Succeeded))
             {
                 WriteError(

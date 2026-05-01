@@ -9,7 +9,7 @@
       <TableControl>
         <TableHeaders>
           <TableColumnHeader>
-            <Label>Filename</Label>
+            <Label>FileUri</Label>
           </TableColumnHeader>
           <TableColumnHeader>
             <Label>Succeeded</Label>
@@ -19,7 +19,7 @@
           <TableRowEntry>
             <TableColumnItems>
               <TableColumnItem>
-                <PropertyName>Filename</PropertyName>
+                <PropertyName>FileUri</PropertyName>
               </TableColumnItem>
               <TableColumnItem>
                   <ScriptBlock>$_.Succeeded</ScriptBlock>
