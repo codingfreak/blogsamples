@@ -43,25 +43,31 @@
         /// Starts the linting of all Bicep files in a given <paramref name="path" />.
         /// </summary>
         /// <param name="path">The path of a directory.</param>
+        /// <param name="maxDop">Maximum degree of parallelism (amount of concurrent tasks).</param>
         /// <returns>The collection of linting results (1 for each Bicep file found).</returns>
         /// <exception cref="DirectoryNotFoundException">Is thrown if the <paramref name="path" /> was not found.</exception>
-        public LinterResult[]? Start(string path)
+        public LinterResult[]? Start(string path, int maxDop)
         {
+            // collect Bicep files
             if (!Directory.Exists(path))
             {
                 throw new DirectoryNotFoundException($"Directory {path} not found.");
             }
-            var token = _tokenSource.Token;
             var files = DirectoryHelper.GetFilesRecursive(path, "*.bicep");
+            // initialize state
+            var token = _tokenSource.Token;
             _filesTotal = files.Length;
             _filesCompleted = 0;
             _progress.PercentComplete = 0;
+            // start linting file by file each in a separate thread
             var tasks = new List<Task<LinterResult>>();
             foreach (var file in files)
             {
                 tasks.Add(Task.Run(() => LintBicep(file), token));
             }
+            // write progress and wait for all tasks to finish
             StartWatcher(token);
+            // unwrap and return the results
             try
             {
                 var results = Task.WhenAll(tasks)
@@ -71,6 +77,7 @@
             }
             catch (TaskCanceledException cancelEx)
             {
+                // was probable cancelled by user
                 return null;
             }
         }

@@ -16,7 +16,7 @@
         protected override void ProcessRecord()
         {
             var worker = new BicepLinter(WriteProgress);
-            var results = worker.Start(Path);
+            var results = worker.Start(Path, ResolvedMaxDop);
             if (results == null)
             {
                 // the process was cancelled probably
@@ -52,6 +52,17 @@
         /// </summary>
         [Parameter(Mandatory = true, ValueFromPipeline = true)]
         public string Path { get; set; } = null!;
+
+        /// <summary>
+        /// The maximum amount of paralled threads to use (defaults to half of processor count).
+        /// </summary>
+        [Parameter(Mandatory = false)]
+        public int? MaxDop { get; set; }
+
+        /// <summary>
+        /// Resolved value for max dop.
+        /// </summary>
+        private int ResolvedMaxDop => MaxDop ?? Environment.ProcessorCount / 2;
 
         #endregion
     }
