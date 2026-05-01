@@ -1,5 +1,6 @@
 ﻿namespace codingfreaks.PoshBicepLint.Helpers
 {
+    using System.Collections.Concurrent;
     using System.Management.Automation;
 
     using Models;
@@ -39,6 +40,8 @@
 
         #region methods
 
+        private int _runningTasks = 0;
+
         /// <summary>
         /// Starts the linting of all Bicep files in a given <paramref name="path" />.
         /// </summary>
@@ -63,7 +66,21 @@
             var tasks = new List<Task<LinterResult>>();
             foreach (var file in files)
             {
-                tasks.Add(Task.Run(() => LintBicep(file), token));
+                
+                tasks.Add(
+                    Task.Run(
+                        () =>
+                        {
+                            while (_runningTasks >= maxDop)
+                            {
+                                Thread.Sleep(20);
+                            }
+                            Interlocked.Increment(ref _runningTasks);
+                            var result = LintBicep(file);
+                            Interlocked.Decrement(ref _runningTasks);
+                            return result;
+                        },
+                        token));
             }
             // write progress and wait for all tasks to finish
             StartWatcher(token);
@@ -89,7 +106,7 @@
         {
             Interlocked.Increment(ref _filesCompleted);
             _progress.PercentComplete = _filesCompleted * 100 / _filesTotal;
-            _progress.StatusDescription = $"{_filesCompleted}/{_filesTotal}";
+            _progress.StatusDescription = $"{_filesCompleted}/{_filesTotal} ({_runningTasks})";
             if (_progress.PercentComplete >= 100)
             {
                 _tokenSource.Cancel();
